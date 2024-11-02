@@ -32,9 +32,9 @@ Future<void> main() async {
       options.tracesSampler = (samplingContext) => 1;
     }, appRunner: () {
       return runApp(
-        DefaultAssetBundle(
-          bundle: SentryAssetBundle(),
-          child: ProviderScope(
+        ProviderScope(
+          child: DefaultAssetBundle(
+            bundle: SentryAssetBundle(),
             child: MyApp(deviceType),
           ),
         ),

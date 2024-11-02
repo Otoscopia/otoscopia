@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:otoscopia/src/core/core.dart';
 
-class Patients extends ConsumerWidget {
-  const Patients({super.key});
+class PatientsScreen extends ConsumerWidget {
+  const PatientsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

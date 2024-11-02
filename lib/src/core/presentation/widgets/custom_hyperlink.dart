@@ -17,8 +17,8 @@ class CustomHyperLink extends StatelessWidget {
       uri: Uri.parse(to),
       builder: (context, followLink) => HyperlinkButton(
         style: ButtonStyle(
-          foregroundColor: ButtonState.resolveWith((states) {
-            if (states.isHovering) {
+          foregroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.isHovered) {
               return FluentTheme.of(context).accentColor;
             }
             return FluentTheme.of(context).typography.body!.color;

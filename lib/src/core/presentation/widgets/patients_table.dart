@@ -14,7 +14,7 @@ class PatientsTable extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final patients = ref.read(patientsProvider);
     final source = PatientsTableSource(ref, patients);
-    final role = ref.read(userProvider).role;
+    final role = ref.read(userProvider)!.role;
     final nurse = role == UserRole.nurse;
     return Card(
       padding: EdgeInsets.zero,
@@ -23,7 +23,7 @@ class PatientsTable extends ConsumerWidget {
         showCheckboxColumn: false,
         minWidth: 1000,
         empty: const Center(child: Text(kNoDataAvailable)),
-        headingRowColor: const m3.MaterialStatePropertyAll(Colors.transparent),
+        headingRowColor: const m3.WidgetStatePropertyAll(Colors.transparent),
         sortArrowAlwaysVisible: true,
         rowsPerPage: 20,
         source: source,

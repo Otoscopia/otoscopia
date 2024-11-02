@@ -1,18 +1,22 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:otoscopia/src/config/config.dart';
 import 'package:otoscopia/src/core/core.dart';
 import 'package:otoscopia/src/features/authentication/authentication.dart';
 
-class AuthenticationNotifier extends StateNotifier<bool> {
-  final StateNotifierProviderRef<AuthenticationNotifier, bool> ref;
-  AuthenticationNotifier(this.ref) : super(false);
+part 'authentication_provider.g.dart';
 
+@Riverpod(keepAlive: true)
+class Authentication extends _$Authentication {
   static final AuthenticationDataSource _source = AuthenticationDataSource();
   final AuthenticationRepository _repository =
       AuthenticationRepositoryImpl(_source);
+
+  @override
+  bool build() {
+    return false;
+  }
 
   Future<UserEntity> login(SignInFormEntity form) async {
     try {
@@ -57,28 +61,24 @@ class AuthenticationNotifier extends StateNotifier<bool> {
     }
   }
 
-  Future<void> logout(BuildContext context) async {
-    UserEntity user = ref.read(userProvider);
+  Future<void> logout() async {
+    UserEntity user = ref.read(userProvider)!;
     try {
       await _repository.logout(user.sessionId);
       await secureStorage.delete(key: 'session');
 
       state = false;
 
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
-
-        ref.read(doctorsProvider).clear();
-        ref.read(nursesProvider).clear();
-        ref.read(assignmentsProvider).clear();
-        ref.read(patientsProvider).clear();
-        ref.read(tableProvider).clear();
-        ref.read(appIndexProvider.notifier).setIndex(0);
-        ref.read(patientsIndexProvider.notifier).setIndex(0);
-        ref.read(schoolsIndexProvider.notifier).setIndex(0);
-        ref.read(schoolsIndexProvider.notifier).setIndex(0);
-        ref.read(userProvider.notifier).setUser(UserEntity.initial());
-      });
+      ref.read(doctorsProvider).clear();
+      ref.read(nursesProvider).clear();
+      ref.read(assignmentsProvider).clear();
+      ref.read(patientsProvider).clear();
+      ref.read(tableProvider).clear();
+      ref.read(appIndexProvider.notifier).setIndex(0);
+      ref.read(patientsIndexProvider.notifier).setIndex(0);
+      ref.read(schoolsIndexProvider.notifier).setIndex(0);
+      ref.read(schoolsIndexProvider.notifier).setIndex(0);
+      ref.read(userProvider.notifier).setUser(null);
     } on AppwriteException catch (error) {
       throw Exception(error.message);
     } catch (error) {
@@ -86,8 +86,3 @@ class AuthenticationNotifier extends StateNotifier<bool> {
     }
   }
 }
-
-final authenticationProvider =
-    StateNotifierProvider<AuthenticationNotifier, bool>(
-  (ref) => AuthenticationNotifier(ref),
-);

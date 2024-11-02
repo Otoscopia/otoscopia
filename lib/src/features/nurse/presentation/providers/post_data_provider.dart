@@ -1,12 +1,18 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:otoscopia/src/core/core.dart';
 import 'package:otoscopia/src/features/nurse/nurse.dart';
 
-class PostDataNotifier extends StateNotifier<void> {
-  final StateNotifierProviderRef<PostDataNotifier, void> ref;
-  PostDataNotifier(this.ref) : super(null);
+part 'post_data_provider.g.dart';
+
+@Riverpod(keepAlive: true)
+class PostData extends _$PostData {
+  @override
+  void build() {
+    return;
+  }
+
   static final _source = PostDataDataSource();
   static final _repository = PostDataRepositoryImpl(_source);
 
@@ -32,7 +38,3 @@ class PostDataNotifier extends StateNotifier<void> {
     }
   }
 }
-
-final postDataProvider = StateNotifierProvider<PostDataNotifier, void>((ref) {
-  return PostDataNotifier(ref);
-});

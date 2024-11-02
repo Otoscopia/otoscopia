@@ -1,9 +1,12 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:otoscopia/src/core/core.dart';
 
-class SchoolsTabNotifier extends StateNotifier<List<Tab>> {
+part 'schools_tabs_provider.g.dart';
+
+@Riverpod(keepAlive: true)
+class SchoolsTab extends _$SchoolsTab {
   static final List<Tab> _tabs = [
     Tab(
       text: const Text(kHome),
@@ -14,9 +17,10 @@ class SchoolsTabNotifier extends StateNotifier<List<Tab>> {
     ),
   ];
 
-  final StateNotifierProviderRef<SchoolsTabNotifier, List<Tab>> ref;
-
-  SchoolsTabNotifier(this.ref) : super(_tabs);
+  @override
+  List<Tab> build() {
+    return _tabs;
+  }
 
   void addTab(SchoolEntity school) {
     final int index =
@@ -42,17 +46,12 @@ class SchoolsTabNotifier extends StateNotifier<List<Tab>> {
   }
 }
 
-final schoolsTabProvider = StateNotifierProvider<SchoolsTabNotifier, List<Tab>>(
-  (ref) => SchoolsTabNotifier(ref),
-);
-
-class SchoolsIndexNotifier extends StateNotifier<int> {
-  SchoolsIndexNotifier() : super(0);
+@Riverpod(keepAlive: true)
+class SchoolsIndex extends _$SchoolsIndex {
+  @override
+  int build() {
+    return 0;
+  }
 
   void setIndex(int index) => state = index;
 }
-
-final schoolsIndexProvider =
-    StateNotifierProvider<SchoolsIndexNotifier, int>((ref) {
-  return SchoolsIndexNotifier();
-});

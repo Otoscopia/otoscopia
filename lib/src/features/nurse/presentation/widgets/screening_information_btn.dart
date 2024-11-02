@@ -11,9 +11,9 @@ class ScreeningInformationBtn extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    bool hasValue = ref.read(screeningInformationProvider).id.isNotEmpty;
+    final hasValue = ref.read(screeningInformationProvider)?.id.isNotEmpty;
     return FilledButton(
-      child: Text(hasValue ? kUpdateBtn : kProceedBtn),
+      child: Text(hasValue != null ? kUpdateBtn : kProceedBtn),
       onPressed: () {
         final bool isValid = medical.isValid;
         if (!isValid) {
@@ -26,9 +26,7 @@ class ScreeningInformationBtn extends ConsumerWidget {
           return;
         }
 
-        ref
-            .read(screeningInformationProvider.notifier)
-            .setScreening(ref, medical);
+        ref.read(screeningInformationProvider.notifier).setScreening(medical);
         ref.read(addPatientTabProvider.notifier).addReview();
       },
     );

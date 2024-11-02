@@ -11,7 +11,7 @@ class NavigationEntity {
 
   NavigationEntity(this._context, this._ref);
 
-  String get image => _ref.watch(userProvider).image!;
+  String get image => _ref.watch(userProvider)!.image!;
 
   List<NavigationPaneItem> get footer => [
         PaneItemSeparator(),
@@ -28,7 +28,11 @@ class NavigationEntity {
         PaneItemAction(
           icon: const Icon(icons.FluentIcons.sign_out_20_regular),
           title: const Text("Sign out"),
-          onTap: () async => _ref.read(authenticationProvider.notifier).logout(_context),
+          onTap: () async {
+            _ref.read(authenticationProvider.notifier).logout();
+
+            Navigator.pushNamedAndRemoveUntil(_context, '/', (route) => false);
+          },
         ),
         PaneItemSeparator(),
       ];
@@ -42,12 +46,12 @@ class NavigationEntity {
         PaneItem(
           icon: const Icon(FluentIcons.issue_tracking),
           title: const Text(kPatients),
-          body: const Patients(),
+          body: const PatientsScreen(),
         ),
         PaneItem(
           icon: const Icon(FluentIcons.e_discovery),
           title: const Text(kSchools),
-          body: const Schools(),
+          body: const SchoolsScreen(),
         ),
       ];
 

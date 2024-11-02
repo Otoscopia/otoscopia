@@ -33,7 +33,7 @@ class _AssignedSchoolsState extends ConsumerState<AssignedSchools> {
         .toList();
 
     final assignment = ref.read(assignmentsProvider);
-    final user = ref.read(userProvider);
+    final user = ref.read(userProvider)!;
 
     selectedSchools = assignment
         .where((assignment) => assignment.nurse == user.id)

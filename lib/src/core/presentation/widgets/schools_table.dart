@@ -20,7 +20,7 @@ class SchoolsTable extends ConsumerWidget {
         showCheckboxColumn: false,
         minWidth: 1000,
         empty: const Center(child: Text(kNoDataAvailable)),
-        headingRowColor: const m3.MaterialStatePropertyAll(Colors.transparent),
+        headingRowColor: const m3.WidgetStatePropertyAll(Colors.transparent),
         sortArrowAlwaysVisible: true,
         rowsPerPage: 20,
         source: source,

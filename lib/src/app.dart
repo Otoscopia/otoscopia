@@ -16,8 +16,8 @@ class MyApp extends ConsumerWidget {
     ThemeEntity theme = ThemeEntity(settings);
 
     bool isAuthenticated = ref.watch(authenticationProvider);
-    UserEntity user = ref.watch(userProvider);
-    UserRole? role = isAuthenticated ? user.role : null;
+    UserEntity? user = ref.watch(userProvider);
+    UserRole? role = isAuthenticated ? user?.role : null;
 
     Map<String, WidgetBuilder> routes = createRoutes(
       isAuthenticated,

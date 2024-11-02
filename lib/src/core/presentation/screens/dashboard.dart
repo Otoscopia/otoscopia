@@ -11,8 +11,10 @@ class Dashboard extends ConsumerWidget {
     final isWeb = getDeviceType() == DeviceType.web;
     final isMobile = getDeviceType() == DeviceType.mobile;
 
-    final mobile = isMobile == true ? isMobile : isWeb && MediaQuery.of(context).size.width < 400;
-    
+    final mobile = isMobile == true
+        ? isMobile
+        : isWeb && MediaQuery.of(context).size.width < 400;
+
     return TabView(
       closeDelayDuration: Duration.zero,
       tabs: ref.watch(dashboardTabProvider),

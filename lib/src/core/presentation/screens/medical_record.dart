@@ -31,7 +31,7 @@ class _MedicalRecordState extends ConsumerState<MedicalRecord> {
   @override
   void initState() {
     super.initState();
-    isDoctor = ref.read(userProvider).role == UserRole.doctor;
+    isDoctor = ref.read(userProvider)!.isDoctor;
 
     recordStatus = widget._table.remarks != null
         ? widget._table.remarks!.status

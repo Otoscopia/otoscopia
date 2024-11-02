@@ -11,7 +11,7 @@ class AddPatientInformationBtn extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    bool hasValue = ref.read(patientProvider).id.isNotEmpty;
+    bool hasValue = ref.read(patientProvider) != null;
 
     return FilledButton(
       onPressed: () {

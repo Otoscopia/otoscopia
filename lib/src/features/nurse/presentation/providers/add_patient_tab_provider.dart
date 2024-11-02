@@ -1,19 +1,22 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:otoscopia/src/features/nurse/nurse.dart';
 
-class AddPatientTabNotifier extends StateNotifier<List<Tab>> {
+part 'add_patient_tab_provider.g.dart';
+
+@Riverpod(keepAlive: true)
+class AddPatientTab extends _$AddPatientTab {
   static final tabs = [
     Tab(
       text: const Text("Patient Information"),
       body: const AddPatientInformation(),
     ),
   ];
-
-  final StateNotifierProviderRef<AddPatientTabNotifier, List<Tab>> ref;
-
-  AddPatientTabNotifier(this.ref) : super(tabs);
+  @override
+  List<Tab> build() {
+    return tabs;
+  }
 
   void addLeftCamera() {
     final int index = state.indexWhere(
@@ -62,7 +65,7 @@ class AddPatientTabNotifier extends StateNotifier<List<Tab>> {
       late final Tab tab;
       tab = Tab(
         text: const Text("Screening Information"),
-        body: const ScreeningInformation(),
+        body: const ScreeningInformationScreen(),
       );
 
       state = [...state, tab];
@@ -97,18 +100,12 @@ class AddPatientTabNotifier extends StateNotifier<List<Tab>> {
   }
 }
 
-final addPatientTabProvider =
-    StateNotifierProvider<AddPatientTabNotifier, List<Tab>>(
-  (ref) => AddPatientTabNotifier(ref),
-);
-
-class AddPatientIndexNotifier extends StateNotifier<int> {
-  AddPatientIndexNotifier() : super(0);
+@Riverpod(keepAlive: true)
+class AddPatientIndex extends _$AddPatientIndex {
+  @override
+  int build() {
+    return 0;
+  }
 
   void setIndex(int index) => state = index;
 }
-
-final addPatientIndexProvider =
-    StateNotifierProvider<AddPatientIndexNotifier, int>(
-  (ref) => AddPatientIndexNotifier(),
-);

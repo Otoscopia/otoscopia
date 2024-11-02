@@ -23,8 +23,8 @@ class ThemeModeIcon extends ConsumerWidget {
       onPressed: () => ref.read(settingsProvider.notifier).setThemeMode(
           themeMode == ThemeMode.system ? ThemeMode.light : ThemeMode.dark),
       style: ButtonStyle(
-        foregroundColor: ButtonState.resolveWith((states) {
-          if (states.isHovering) return FluentTheme.of(context).accentColor;
+        foregroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.isHovered) return FluentTheme.of(context).accentColor;
           return FluentTheme.of(context).typography.body!.color;
         }),
       ),

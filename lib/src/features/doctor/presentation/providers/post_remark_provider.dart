@@ -1,18 +1,23 @@
 import 'package:flutter/services.dart';
 
 import 'package:appwrite/appwrite.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:otoscopia/src/config/config.dart';
 import 'package:otoscopia/src/core/core.dart';
 import 'package:otoscopia/src/features/doctor/doctor.dart';
 
-class PostRemarkNotifier extends StateNotifier<void> {
-  final StateNotifierProviderRef<PostRemarkNotifier, void> ref;
-  PostRemarkNotifier(this.ref) : super(null);
+part 'post_remark_provider.g.dart';
 
+@Riverpod(keepAlive: true)
+class PostRemark extends _$PostRemark {
   static final _source = PostRemarkDataSource();
   static final _repository = PostRemarkRepositoryImpl(_source);
+
+  @override
+  void build() {
+    return;
+  }
 
   Future<RemarksEntity> postRemark(
     String remarks,
@@ -52,8 +57,3 @@ class PostRemarkNotifier extends StateNotifier<void> {
     }
   }
 }
-
-final postRemarkProvider =
-    StateNotifierProvider<PostRemarkNotifier, void>((ref) {
-  return PostRemarkNotifier(ref);
-});

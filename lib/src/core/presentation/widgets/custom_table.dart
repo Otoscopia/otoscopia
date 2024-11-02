@@ -15,7 +15,7 @@ class CustomTable extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    UserRole role = ref.read(userProvider).role;
+    UserRole role = ref.read(userProvider)!.role;
     bool nurse = role == UserRole.nurse;
     bool doctor = role == UserRole.doctor;
 
@@ -40,7 +40,7 @@ class CustomTable extends ConsumerWidget {
             minWidth: mobile ? 500 : 1200,
             empty: const Center(child: Text(kNoDataAvailable)),
             headingRowColor:
-                const m3.MaterialStatePropertyAll(Colors.transparent),
+                const m3.WidgetStatePropertyAll(Colors.transparent),
             sortArrowAlwaysVisible: true,
             rowsPerPage: 20,
             columns: [
@@ -87,7 +87,7 @@ class TableSource extends m3.DataTableSource {
 
   @override
   m3.DataRow? getRow(int index) {
-    final role = ref.read(userProvider).role == UserRole.nurse;
+    final role = ref.read(userProvider)!.isNurse;
     final table = _data[index];
     final patient = table.patient;
 
@@ -115,7 +115,11 @@ class TableSource extends m3.DataTableSource {
     final style = role ? 7 : (hasRemarks ? 0 : 5);
 
     return DataRow2(
-      color: role && !hasRemarks ? null : isDark ? const m3.MaterialStatePropertyAll(Color(0xFF1d2224)) : const m3.MaterialStatePropertyAll(Color(0xFFabb1b4)),
+      color: role && !hasRemarks
+          ? null
+          : isDark
+              ? const m3.WidgetStatePropertyAll(Color(0xFF1d2224))
+              : const m3.WidgetStatePropertyAll(Color(0xFFabb1b4)),
       onSelectChanged: (value) {
         ref.read(dashboardTabProvider.notifier).addTab(table);
       },
@@ -131,7 +135,7 @@ class TableSource extends m3.DataTableSource {
           ],
         )),
         if (!mobile) m3.DataCell(CustomText(school.name, style: style)),
-        if (!mobile  && role) m3.DataCell(CustomText(doctor.name, style: style)),
+        if (!mobile && role) m3.DataCell(CustomText(doctor.name, style: style)),
         if (!mobile && !role) m3.DataCell(CustomText(nurse.name, style: style)),
       ],
     );
@@ -146,11 +150,14 @@ class TableSource extends m3.DataTableSource {
   @override
   int get selectedRowCount => 0;
 
-  void sortByName<T>(Comparable<T> Function(TableEntity d) getField, bool ascending) {
+  void sortByName<T>(
+      Comparable<T> Function(TableEntity d) getField, bool ascending) {
     _data.sort((a, b) {
       final aValue = getField(a);
       final bValue = getField(b);
-      return ascending ? Comparable.compare(aValue, bValue) : Comparable.compare(bValue, aValue);
+      return ascending
+          ? Comparable.compare(aValue, bValue)
+          : Comparable.compare(bValue, aValue);
     });
     notifyListeners();
   }

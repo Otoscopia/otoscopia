@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/enums.dart';
-import 'package:appwrite/models.dart';
 
 import 'package:otoscopia/src/config/config.dart';
 import 'package:otoscopia/src/core/core.dart';
@@ -20,17 +19,17 @@ class AuthenticationDataSource {
 
   Future<List> login(SignInFormEntity form) async {
     try {
-      Session session = await _account.createEmailPasswordSession(
+      final session = await _account.createEmailPasswordSession(
         email: form.email,
         password: form.password,
       );
 
-      User user = await _account.get();
+      final user = await _account.get();
       final verified = user.emailVerification && user.phoneVerification;
 
       final mfaFactors = await _account.listMfaFactors();
 
-      Document result = await _database.getDocument(
+      final result = await _database.getDocument(
         databaseId: Env.database,
         collectionId: Env.userCollection,
         documentId: user.$id,
@@ -56,7 +55,7 @@ class AuthenticationDataSource {
 
       final mfaFactors = await _account.listMfaFactors();
 
-      Document result = await _database.getDocument(
+      final result = await _database.getDocument(
         databaseId: Env.database,
         collectionId: Env.userCollection,
         documentId: user.$id,
@@ -107,7 +106,7 @@ class AuthenticationDataSource {
 
       final user = await _account.get();
 
-      Document data = await _database.getDocument(
+      final data = await _database.getDocument(
         databaseId: Env.database,
         collectionId: Env.userCollection,
         documentId: user.$id,

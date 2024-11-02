@@ -14,7 +14,7 @@ class ProfileSettings extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.read(userProvider);
+    final user = ref.read(userProvider)!;
     final mfa = user.mfaFactors.totp;
     final role = user.role;
 

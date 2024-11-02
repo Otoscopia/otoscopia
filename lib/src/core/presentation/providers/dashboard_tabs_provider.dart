@@ -1,10 +1,13 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:otoscopia/src/core/core.dart';
 import 'package:otoscopia/src/features/nurse/nurse.dart';
 
-class DashboardTabNotifier extends StateNotifier<List<Tab>> {
+part 'dashboard_tabs_provider.g.dart';
+
+@Riverpod(keepAlive: true)
+class DashboardTab extends _$DashboardTab {
   static final List<Tab> tabs = [
     Tab(
       text: const Text(kHome),
@@ -15,9 +18,10 @@ class DashboardTabNotifier extends StateNotifier<List<Tab>> {
     ),
   ];
 
-  final StateNotifierProviderRef<DashboardTabNotifier, List<Tab>> ref;
-
-  DashboardTabNotifier(this.ref) : super(tabs);
+  @override
+  List<Tab> build() {
+    return tabs;
+  }
 
   int findByPatient(PatientEntity patient) {
     return state
@@ -103,23 +107,18 @@ class DashboardTabNotifier extends StateNotifier<List<Tab>> {
     if (index != -1) {
       ref.read(dashboardIndexProvider.notifier).setIndex(index);
     } else {
-      addTab(TableEntity(patient: patient, screening: screening, remarks: remarks));
+      addTab(TableEntity(
+          patient: patient, screening: screening, remarks: remarks));
     }
   }
 }
 
-final dashboardTabProvider =
-    StateNotifierProvider<DashboardTabNotifier, List<Tab>>(
-  (ref) => DashboardTabNotifier(ref),
-);
-
-class DashboardIndexNotifier extends StateNotifier<int> {
-  DashboardIndexNotifier() : super(0);
+@Riverpod(keepAlive: true)
+class DashboardIndex extends _$DashboardIndex {
+  @override
+  int build() {
+    return 0;
+  }
 
   void setIndex(int index) => state = index;
 }
-
-final dashboardIndexProvider =
-    StateNotifierProvider<DashboardIndexNotifier, int>(
-  (ref) => DashboardIndexNotifier(),
-);

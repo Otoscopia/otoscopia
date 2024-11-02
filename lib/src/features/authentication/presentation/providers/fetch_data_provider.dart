@@ -1,19 +1,25 @@
 import 'dart:typed_data';
 
 import 'package:appwrite/appwrite.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:otoscopia/src/core/core.dart';
 import 'package:otoscopia/src/features/authentication/authentication.dart';
 
-class FetchDataNotifier extends StateNotifier<void> {
-  StateNotifierProviderRef<FetchDataNotifier, void> ref;
-  FetchDataNotifier(this.ref) : super(null);
+part 'fetch_data_provider.g.dart';
+
+@Riverpod(keepAlive: true)
+class FetchData extends _$FetchData {
   static final FetchDataDataSource _source = FetchDataDataSource();
   static final FetchImageDataSource _imageSource = FetchImageDataSource();
   final FetchDataRepository _repository = FetchDataRepositoryImpl(_source);
   final FetchImageRepository _imageRepository =
       FetchImageRepositoryImpl(_imageSource);
+
+  @override
+  void build() {
+    return;
+  }
 
   Future<void> getSchools() async {
     try {
@@ -246,17 +252,12 @@ class FetchDataNotifier extends StateNotifier<void> {
   }
 }
 
-final fetchDataProvider = StateNotifierProvider<FetchDataNotifier, void>(
-  (ref) => FetchDataNotifier(ref),
-);
-
-class RemarksNotifier extends StateNotifier<List<RemarksEntity>> {
-  RemarksNotifier() : super([]);
+@Riverpod(keepAlive: true)
+class Remarks extends _$Remarks {
+  @override
+  List<RemarksEntity> build() {
+    return [];
+  }
 
   setRemarks(List<RemarksEntity> remarks) => state = remarks;
 }
-
-final remarksProvider =
-    StateNotifierProvider<RemarksNotifier, List<RemarksEntity>>((ref) {
-  return RemarksNotifier();
-});

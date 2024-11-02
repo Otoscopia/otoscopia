@@ -17,7 +17,8 @@ class ApplicationContainer extends ConsumerWidget {
         padding: EdgeInsets.zero,
         content: OfflineBuilder(
           connectivityBuilder: (context, connectivity, child) {
-            final bool connected = connectivity != ConnectivityResult.none;
+            final bool connected =
+                connectivity.contains(ConnectivityResult.none);
 
             WidgetsBinding.instance.addPostFrameCallback((_) {
               if (ref.read(connectionProvider) != connected) {

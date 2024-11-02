@@ -1,9 +1,15 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:otoscopia/src/core/core.dart';
 
-class ScreeningsNotifier extends StateNotifier<List<ScreeningEntity>> {
-  ScreeningsNotifier() : super([]);
+part 'screenings_provider.g.dart';
+
+@Riverpod(keepAlive: true)
+class Screenings extends _$Screenings {
+  @override
+  List<ScreeningEntity> build() {
+    return [];
+  }
 
   void setScreenings(List<ScreeningEntity> screenings) => state = screenings;
 
@@ -33,8 +39,3 @@ class ScreeningsNotifier extends StateNotifier<List<ScreeningEntity>> {
     }
   }
 }
-
-final screeningsProvider =
-    StateNotifierProvider<ScreeningsNotifier, List<ScreeningEntity>>(
-  (ref) => ScreeningsNotifier(),
-);

@@ -19,8 +19,8 @@ class _ReviewsState extends ConsumerState<Reviews> {
 
   @override
   Widget build(BuildContext context) {
-    final patient = ref.read(patientProvider);
-    final screening = ref.read(screeningInformationProvider);
+    final patient = ref.read(patientProvider)!;
+    final screening = ref.read(screeningInformationProvider)!;
 
     return DoubleCard(
       scroll: isUploading ? false : true,

@@ -20,7 +20,7 @@ class SchoolsPatient extends ConsumerWidget {
         showCheckboxColumn: false,
         minWidth: 1000,
         empty: const Center(child: Text(kNoDataAvailable)),
-        headingRowColor: const m3.MaterialStatePropertyAll(Colors.transparent),
+        headingRowColor: const m3.WidgetStatePropertyAll(Colors.transparent),
         sortArrowAlwaysVisible: true,
         rowsPerPage: 20,
         source: source,
@@ -52,7 +52,6 @@ class SchoolsPatientTable extends m3.DataTableSource {
         final patientNotifier = ref.read(patientsTabProvider.notifier);
         ref.read(appIndexProvider.notifier).setIndex(1);
         patientNotifier.addTab(patient);
-        
       },
     );
   }

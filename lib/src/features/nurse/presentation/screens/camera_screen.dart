@@ -270,7 +270,7 @@ class _CameraState extends ConsumerState<CameraScreen> {
   }
 
   moveFile(File sourceFile, String fileName) async {
-    final patientUid = ref.watch(patientProvider).id;
+    final patientUid = ref.watch(patientProvider)!.id;
     final String filePath = "$applicationDirectory\\$patientUid";
     Directory(filePath).createSync(recursive: true);
     final String filePosition = "$positionString-$fileName";
@@ -311,7 +311,7 @@ class _CameraState extends ConsumerState<CameraScreen> {
   }
 
   void continueButton(BuildContext context) {
-    String patientUid = ref.watch(patientProvider).id;
+    String patientUid = ref.watch(patientProvider)!.id;
     final directory = Directory("$applicationDirectory\\$patientUid");
 
     if (directory.listSync().isEmpty) {

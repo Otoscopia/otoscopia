@@ -1,9 +1,15 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:otoscopia/src/core/core.dart';
 
-class NursesNotifier extends StateNotifier<List<UsersEntity>> {
-  NursesNotifier() : super([]);
+part 'nurses_provider.g.dart';
+
+@Riverpod(keepAlive: true)
+class Nurses extends _$Nurses {
+  @override
+  List<UsersEntity> build() {
+    return [];
+  }
 
   void setNurses(List<UsersEntity> nurses) => state = nurses;
 
@@ -11,7 +17,3 @@ class NursesNotifier extends StateNotifier<List<UsersEntity>> {
     return state.firstWhere((user) => user.id == id);
   }
 }
-
-final nursesProvider = StateNotifierProvider<NursesNotifier, List<UsersEntity>>(
-  (ref) => NursesNotifier(),
-);

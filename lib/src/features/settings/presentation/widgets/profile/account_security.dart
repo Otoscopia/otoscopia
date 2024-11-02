@@ -16,7 +16,7 @@ class AccountSecurity extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     const width = 150.0;
 
-    final user = ref.read(userProvider);
+    final user = ref.read(userProvider)!;
     final authenticatorApp = user.mfaFactors.totp;
 
     return Column(

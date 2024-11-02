@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 
 import 'package:otoscopia/src/config/config.dart';
-import 'package:otoscopia/src/core/core.dart';
 import 'package:otoscopia/src/features/nurse/nurse.dart';
 
 class ScreeningEntity {
@@ -52,28 +51,27 @@ class ScreeningEntity {
     this.oldScreening,
   });
 
-  ScreeningEntity copyWith({
-    String? id,
-    String? patient,
-    String? historyOfIllness,
-    String? remarks,
-    double? temperature,
-    double? weight,
-    double? height,
-    bool? similarCondition,
-    List<bool>? chiefComplaint,
-    String? chiefComplaintRemarks,
-    bool? allergy,
-    String? allergyRemarks,
-    bool? undergoneSurgery,
-    String? undergoneSurgeryRemarks,
-    bool? medication,
-    String? medicationRemarks,
-    List<String>? images,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    String? oldScreening
-  }) {
+  ScreeningEntity copyWith(
+      {String? id,
+      String? patient,
+      String? historyOfIllness,
+      String? remarks,
+      double? temperature,
+      double? weight,
+      double? height,
+      bool? similarCondition,
+      List<bool>? chiefComplaint,
+      String? chiefComplaintRemarks,
+      bool? allergy,
+      String? allergyRemarks,
+      bool? undergoneSurgery,
+      String? undergoneSurgeryRemarks,
+      bool? medication,
+      String? medicationRemarks,
+      List<String>? images,
+      DateTime? createdAt,
+      DateTime? updatedAt,
+      String? oldScreening}) {
     return ScreeningEntity(
       id: id ?? this.id,
       patient: patient ?? this.patient,
@@ -121,7 +119,6 @@ class ScreeningEntity {
       'oldScreening': oldScreening,
     };
   }
-
 
   factory ScreeningEntity.fromMap(Map<String, dynamic> map) {
     return ScreeningEntity(
@@ -207,30 +204,6 @@ class ScreeningEntity {
         createdAt.hashCode ^
         oldScreening.hashCode ^
         updatedAt.hashCode;
-  }
-
-  factory ScreeningEntity.initial() {
-    return ScreeningEntity(
-      id: '',
-      patient: '',
-      historyOfIllness: '',
-      remarks: '',
-      temperature: 0.0,
-      weight: 0.0,
-      height: 0.0,
-      similarCondition: false,
-      chiefComplaint: List.generate(complains.length, (index) => false),
-      chiefComplaintRemarks: '',
-      allergy: false,
-      allergyRemarks: '',
-      undergoneSurgery: false,
-      undergoneSurgeryRemarks: '',
-      medication: false,
-      medicationRemarks: '',
-      images: <String>[],
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    );
   }
 
   factory ScreeningEntity.fromMedical(

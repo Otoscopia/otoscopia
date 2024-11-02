@@ -5,15 +5,16 @@ import 'package:gap/gap.dart';
 import 'package:otoscopia/src/core/core.dart';
 import 'package:otoscopia/src/features/nurse/nurse.dart';
 
-class ScreeningInformation extends ConsumerStatefulWidget {
-  const ScreeningInformation({super.key});
+class ScreeningInformationScreen extends ConsumerStatefulWidget {
+  const ScreeningInformationScreen({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _ScreeningInformationState();
+      _ScreeningInformationScreenState();
 }
 
-class _ScreeningInformationState extends ConsumerState<ScreeningInformation> {
+class _ScreeningInformationScreenState
+    extends ConsumerState<ScreeningInformationScreen> {
   MedicalFormEntity medical = MedicalFormEntity();
 
   @override
@@ -118,10 +119,9 @@ class _ScreeningInformationState extends ConsumerState<ScreeningInformation> {
   @override
   initState() {
     super.initState();
-    ScreeningEntity screening = ref.read(screeningInformationProvider);
-    bool initial = screening.id == '';
+    final screening = ref.read(screeningInformationProvider);
 
-    if (!initial) {
+    if (screening != null) {
       MedicalFormEntity medicalForm = MedicalFormEntity.fromScreeningEntity(
         screening,
       );

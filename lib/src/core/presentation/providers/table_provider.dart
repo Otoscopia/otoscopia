@@ -1,12 +1,17 @@
 import 'package:collection/collection.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:otoscopia/src/core/core.dart';
 import 'package:otoscopia/src/features/authentication/authentication.dart';
 
-class TableNotifier extends StateNotifier<List<TableEntity>> {
-  final StateNotifierProviderRef<TableNotifier, List<TableEntity>> ref;
-  TableNotifier(this.ref) : super([]);
+part 'table_provider.g.dart';
+
+@Riverpod(keepAlive: true)
+class Table extends _$Table {
+  @override
+  List<TableEntity> build() {
+    return [];
+  }
 
   void setTable(List<PatientEntity> patients, List<ScreeningEntity> screenings,
       List<RemarksEntity> remarks) {
@@ -63,7 +68,7 @@ class TableNotifier extends StateNotifier<List<TableEntity>> {
   void removeTable(int index) => state.removeAt(index);
 
   void fromPatientSnapshot(Map<String, dynamic> snapshot) async {
-    final user = ref.read(userProvider);
+    final user = ref.read(userProvider)!;
     final patient = PatientEntity.fromMap(snapshot);
 
     if (patient.doctor == user.id) {
@@ -86,7 +91,7 @@ class TableNotifier extends StateNotifier<List<TableEntity>> {
   }
 
   void fromScreeningSnapshot(Map<String, dynamic> snapshot) {
-    final user = ref.read(userProvider);
+    final user = ref.read(userProvider)!;
     final patient = PatientEntity.fromMap(snapshot['patient']);
 
     if (patient.doctor == user.id) {
@@ -111,7 +116,7 @@ class TableNotifier extends StateNotifier<List<TableEntity>> {
   }
 
   void fromRemarksSnapshot(Map<String, dynamic> snapshot) {
-    final user = ref.read(userProvider);
+    final user = ref.read(userProvider)!;
     final patientName = snapshot['screening']['patient']['name'];
     final patient = ref.read(patientsProvider.notifier).findByName(patientName);
 
@@ -144,7 +149,3 @@ class TableNotifier extends StateNotifier<List<TableEntity>> {
     }
   }
 }
-
-final tableProvider = StateNotifierProvider<TableNotifier, List<TableEntity>>(
-  (ref) => TableNotifier(ref),
-);

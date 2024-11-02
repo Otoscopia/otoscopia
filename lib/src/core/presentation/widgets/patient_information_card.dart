@@ -9,8 +9,8 @@ class PatientInformationCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isDoctor = ref.read(userProvider.notifier).isDoctor;
-    final isNurse = ref.read(userProvider.notifier).isNurse;
+    final isDoctor = ref.read(userProvider)!.isDoctor;
+    final isNurse = ref.read(userProvider)!.isNurse;
 
     final name = _patient.name;
     final age = DateTime.now().difference(_patient.birthDate).inDays ~/ 365;
@@ -20,7 +20,8 @@ class PatientInformationCard extends ConsumerWidget {
     final school = ref.read(schoolsProvider.notifier).findById(_patient.school);
     final doctor = ref.read(doctorsProvider.notifier).findById(_patient.doctor);
     final code = _patient.code;
-    final assignment = ref.read(assignmentsProvider.notifier).findBySchool(_patient.school);
+    final assignment =
+        ref.read(assignmentsProvider.notifier).findBySchool(_patient.school);
     final nurse = ref.read(nursesProvider.notifier).findById(assignment.nurse);
 
     return CardOpacity(

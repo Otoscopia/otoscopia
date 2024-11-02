@@ -9,8 +9,7 @@ class UserInformation extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProvider
-    );
+    final user = ref.watch(userProvider)!;
     final role = user.role == UserRole.doctor ? "Doctor" : "Nurse";
     return Row(
       children: [

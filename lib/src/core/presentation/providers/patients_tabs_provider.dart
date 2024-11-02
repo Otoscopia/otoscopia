@@ -1,10 +1,12 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:otoscopia/src/core/core.dart';
 
-class PatientsTabNotifier extends StateNotifier<List<Tab>> {
-  final StateNotifierProviderRef<PatientsTabNotifier, List<Tab>> ref;
+part 'patients_tabs_provider.g.dart';
+
+@Riverpod(keepAlive: true)
+class PatientsTab extends _$PatientsTab {
   static final _tabs = [
     Tab(
       text: const Text("Patients"),
@@ -15,7 +17,10 @@ class PatientsTabNotifier extends StateNotifier<List<Tab>> {
     ),
   ];
 
-  PatientsTabNotifier(this.ref) : super(_tabs);
+  @override
+  List<Tab> build() {
+    return _tabs;
+  }
 
   bool findTab(PatientEntity patient) {
     final index =
@@ -47,16 +52,12 @@ class PatientsTabNotifier extends StateNotifier<List<Tab>> {
   }
 }
 
-final patientsTabProvider =
-    StateNotifierProvider<PatientsTabNotifier, List<Tab>>(
-  (ref) => PatientsTabNotifier(ref),
-);
-
-class PatientsIndexNotifier extends StateNotifier<int> {
-  PatientsIndexNotifier() : super(0);
+@Riverpod(keepAlive: true)
+class PatientsIndex extends _$PatientsIndex {
+  @override
+  int build() {
+    return 0;
+  }
 
   void setIndex(int index) => state = index;
 }
-
-final patientsIndexProvider = StateNotifierProvider<PatientsIndexNotifier, int>(
-    (ref) => PatientsIndexNotifier());

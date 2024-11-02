@@ -1,14 +1,15 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class ConnectionNotifier extends StateNotifier<bool> {
-  ConnectionNotifier() : super(false);
+part 'connection_provider.g.dart';
+
+@Riverpod(keepAlive: true)
+class Connection extends _$Connection {
+  @override
+  bool build() {
+    return false;
+  }
 
   void setConnection(bool value) {
     state = value;
   }
 }
-
-final connectionProvider =
-    StateNotifierProvider<ConnectionNotifier, bool>((ref) {
-  return ConnectionNotifier();
-});

@@ -1,27 +1,35 @@
 import 'dart:io';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:otoscopia/src/core/core.dart';
 import 'package:otoscopia/src/features/nurse/nurse.dart';
 
-class ScreeningInformationNotifier extends StateNotifier<ScreeningEntity> {
-  ScreeningInformationNotifier() : super(ScreeningEntity.initial());
+part 'screening_information_provider.g.dart';
 
-  void setScreening(WidgetRef ref, MedicalFormEntity medical) {
-    final patient = ref.read(patientProvider);
-    state = ScreeningEntity.fromMedical(medical, patient.id, state.images);
+@Riverpod(keepAlive: true)
+class ScreeningInformation extends _$ScreeningInformation {
+  @override
+  ScreeningEntity? build() {
+    return null;
+  }
+
+  void setScreening(MedicalFormEntity medical) {
+    final patient = ref.read(patientProvider)!;
+    state = ScreeningEntity.fromMedical(medical, patient.id, state!.images);
   }
 
   void setImage(String image) {
-    state = state.copyWith(images: [...state.images, image]);
+    state = state!.copyWith(images: [...state!.images, image]);
   }
+
+  void resetInformation() => state = null;
 
   Future<void> removeImage(String image) async {
     final earPosition = image.split("\\").last.toLowerCase().contains("left")
         ? "left"
         : "right";
-    final imagePosition = state.images
+    final imagePosition = state!.images
         .where((element) => element.toLowerCase().contains(earPosition))
         .toList();
 
@@ -34,16 +42,9 @@ class ScreeningInformationNotifier extends StateNotifier<ScreeningEntity> {
     File file = File(image);
     try {
       await file.delete();
-      state = state.copyWith(images: state.images..remove(image));
+      state = state!.copyWith(images: state!.images..remove(image));
     } catch (e) {
       throw Exception("Error deleting the image");
     }
   }
-
-  void resetInformation() => state = ScreeningEntity.initial();
 }
-
-final screeningInformationProvider =
-    StateNotifierProvider<ScreeningInformationNotifier, ScreeningEntity>((ref) {
-  return ScreeningInformationNotifier();
-});

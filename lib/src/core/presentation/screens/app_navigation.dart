@@ -32,7 +32,9 @@ class AppNavigation extends ConsumerWidget {
             ref.read(tableProvider.notifier).fromRemarksSnapshot(event.payload);
           }
         } catch (e) {
-          popUpInfoBar(kErrorTitle, e.toString(), context);
+          WidgetsFlutterBinding().addPostFrameCallback((_) {
+            popUpInfoBar(kErrorTitle, e.toString(), context);
+          });
         }
       });
     }
@@ -46,10 +48,12 @@ class AppNavigation extends ConsumerWidget {
 
     return ApplicationContainer(
       child: NavigationView(
-        appBar: mobile ? const NavigationAppBar(
-          title: Logo(),
-          automaticallyImplyLeading: false,
-        ) : null,
+        appBar: mobile
+            ? const NavigationAppBar(
+                title: Logo(),
+                automaticallyImplyLeading: false,
+              )
+            : null,
         pane: NavigationPane(
           displayMode:
               mobile ? PaneDisplayMode.minimal : PaneDisplayMode.compact,

@@ -1,11 +1,15 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:otoscopia/src/core/core.dart';
 
-class AppIndexNotifier extends StateNotifier<int> {
-  final StateNotifierProviderRef<AppIndexNotifier, int> ref;
+part 'app_index_provider.g.dart';
 
-  AppIndexNotifier(this.ref) : super(0);
+@Riverpod(keepAlive: true)
+class AppIndex extends _$AppIndex {
+  @override
+  int build() {
+    return 0;
+  }
 
   void setIndex(int index) {
     state = index;
@@ -16,7 +20,3 @@ class AppIndexNotifier extends StateNotifier<int> {
     ref.read(patientsTabProvider.notifier).addTab(patient);
   }
 }
-
-final appIndexProvider = StateNotifierProvider<AppIndexNotifier, int>(
-  (ref) => AppIndexNotifier(ref),
-);

@@ -1,10 +1,16 @@
 import 'package:collection/collection.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:otoscopia/src/core/core.dart';
 
-class PatientsNotifier extends StateNotifier<List<PatientEntity>> {
-  PatientsNotifier() : super([]);
+part 'patients_provider.g.dart';
+
+@Riverpod(keepAlive: true)
+class Patients extends _$Patients {
+  @override
+  List<PatientEntity> build() {
+    return [];
+  }
 
   void setPatients(List<PatientEntity> patients) {
     patients.sort((a, b) => a.name.compareTo(b.name));
@@ -42,8 +48,3 @@ class PatientsNotifier extends StateNotifier<List<PatientEntity>> {
     return patient;
   }
 }
-
-final patientsProvider =
-    StateNotifierProvider<PatientsNotifier, List<PatientEntity>>(
-  (ref) => PatientsNotifier(),
-);

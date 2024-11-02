@@ -1,26 +1,26 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:otoscopia/src/core/core.dart';
 
-class UserNotifier extends StateNotifier<UserEntity> {
-  UserNotifier() : super(UserEntity.initial());
+part 'user_provider.g.dart';
 
-  void setUser(UserEntity user) {
-    state = user;
+@Riverpod(keepAlive: true)
+class User extends _$User {
+  @override
+  UserEntity? build() {
+    return null;
   }
 
-  UserRole get role => state.role;
-
-  bool get isDoctor => state.role == UserRole.doctor;
-
-  bool get isNurse => state.role == UserRole.nurse;
+  void setUser(UserEntity? user) {
+    state = user;
+  }
 
   void updateInformation({
     String? name,
     String? phone,
     String? workAddress,
   }) {
-    final user = state.copyWith(
+    final user = state!.copyWith(
       name: name,
       phone: phone,
       workAddress: workAddress,
@@ -30,11 +30,7 @@ class UserNotifier extends StateNotifier<UserEntity> {
   }
 
   void updateMfa(bool mfa) {
-    final user = state.updateMfaFactors(mfa);
+    final user = state!.updateMfaFactors(mfa);
     setUser(user);
   }
 }
-
-final userProvider = StateNotifierProvider<UserNotifier, UserEntity>(
-  (ref) => UserNotifier(),
-);

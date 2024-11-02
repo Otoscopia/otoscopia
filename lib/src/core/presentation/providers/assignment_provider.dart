@@ -1,9 +1,15 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:otoscopia/src/core/core.dart';
 
-class AssignmentsNotifier extends StateNotifier<List<AssignmentEntity>> {
-  AssignmentsNotifier() : super([]);
+part 'assignment_provider.g.dart';
+
+@Riverpod(keepAlive: true)
+class Assignments extends _$Assignments {
+  @override
+  List<AssignmentEntity> build() {
+    return [];
+  }
 
   void setAssignments(List<AssignmentEntity> assignments) {
     state = assignments;
@@ -27,8 +33,3 @@ class AssignmentsNotifier extends StateNotifier<List<AssignmentEntity>> {
         assignment.school == school && assignment.isActive == true);
   }
 }
-
-final assignmentsProvider =
-    StateNotifierProvider<AssignmentsNotifier, List<AssignmentEntity>>(
-  (ref) => AssignmentsNotifier(),
-);

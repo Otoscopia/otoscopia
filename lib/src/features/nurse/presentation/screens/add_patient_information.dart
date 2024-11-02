@@ -74,8 +74,8 @@ class _AddPatientInformationState extends ConsumerState<AddPatientInformation> {
                     controller: _form.schoolController,
                     items: items,
                     onSelected: (value) {
-                      setState(
-                          () => _form.schoolController.text = value.value!.name);
+                      setState(() =>
+                          _form.schoolController.text = value.value!.name);
                     },
                   ),
                 ),
@@ -98,8 +98,8 @@ class _AddPatientInformationState extends ConsumerState<AddPatientInformation> {
 
   @override
   void initState() {
-    PatientEntity patient = ref.read(patientProvider);
-    if (patient.id.isNotEmpty) {
+    final patient = ref.read(patientProvider);
+    if (patient != null) {
       final school =
           ref.read(schoolsProvider.notifier).findById(patient.school);
       _form.nameController.text = patient.name;

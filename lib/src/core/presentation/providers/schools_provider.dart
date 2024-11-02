@@ -1,9 +1,15 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:otoscopia/src/core/core.dart';
 
-class SchoolsNotifier extends StateNotifier<List<SchoolEntity>> {
-  SchoolsNotifier() : super([]);
+part 'schools_provider.g.dart';
+
+@Riverpod(keepAlive: true)
+class Schools extends _$Schools {
+  @override
+  List<SchoolEntity> build() {
+    return [];
+  }
 
   void setSchools(List<SchoolEntity> schools) {
     schools.sort((a, b) => a.name.compareTo(b.name));
@@ -11,7 +17,8 @@ class SchoolsNotifier extends StateNotifier<List<SchoolEntity>> {
   }
 
   SchoolEntity findByName(String name) {
-    final SchoolEntity school = state.firstWhere((school) => school.name == name);
+    final SchoolEntity school =
+        state.firstWhere((school) => school.name == name);
     return school;
   }
 
@@ -20,8 +27,3 @@ class SchoolsNotifier extends StateNotifier<List<SchoolEntity>> {
     return school;
   }
 }
-
-final schoolsProvider =
-    StateNotifierProvider<SchoolsNotifier, List<SchoolEntity>>(
-  (ref) => SchoolsNotifier(),
-);

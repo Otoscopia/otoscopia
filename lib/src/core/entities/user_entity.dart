@@ -153,23 +153,7 @@ class UserEntity {
     }
   }
 
-  factory UserEntity.initial() {
-    final mfa = MfaFactors(
-      totp: false,
-      phone: false,
-      email: false,
-      recoveryCode: false,  
-    );
-    return UserEntity(
-      id: '',
-      name: '',
-      email: '',
-      phone: '',
-      workAddress: '',
-      role: UserRole.patient,
-      mfaFactors: mfa,
-      sessionId: '',
-      preferences: {},
-    );
-  }
+  bool get isDoctor => role == UserRole.doctor;
+
+  bool get isNurse => role == UserRole.nurse;
 }
