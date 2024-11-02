@@ -8,8 +8,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   file_saver
   flutter_secure_storage_windows
   printing
-  screen_retriever
-  sentry_flutter
+  screen_retriever_windows
   system_theme
   url_launcher_windows
   window_manager
@@ -17,6 +16,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
+  sentry_flutter
 )
 
 set(PLUGIN_BUNDLED_LIBRARIES)
