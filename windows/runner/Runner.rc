@@ -89,11 +89,11 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.laurencetroyv" "\0"
+            VALUE "CompanyName", "com.otoscopia" "\0"
             VALUE "FileDescription", "otoscopia" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "otoscopia" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2022-2024 com.laurencetroyv. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2022-2025 com.otoscopia. All rights reserved." "\0"
             VALUE "OriginalFilename", "otoscopia.exe" "\0"
             VALUE "ProductName", "otoscopia" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"

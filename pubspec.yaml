@@ -2,55 +2,54 @@ name: otoscopia
 description: "A new Flutter project."
 publish_to: "none"
 
-version: 0.2.0
+version: 1.0.0
 
 environment:
-  sdk: ">=3.2.3 <4.0.0"
+  sdk: "^3.7.2"
 
 dependencies:
-  appwrite: ^12.0.4
-  camera: ^0.11.0+1
-  camera_platform_interface: ^2.7.4
-  camera_windows: ^0.2.2
-  collection: ^1.18.0
+  appwrite: ^15.0.2
+  camera: ^0.11.1
+  camera_platform_interface: ^2.10.0
+  camera_windows: ^0.2.6+2
+  collection: ^1.19.1
   cupertino_icons: ^1.0.8
-  data_table_2: ^2.5.12
-  dio: ^5.4.3+1
-  envied: ^0.5.4+1
-  file_picker: ^8.0.1
-  file_saver: ^0.2.13
-  fluent_ui: ^4.8.7
-  fluentui_system_icons: ^1.1.240
+  data_table_2: ^2.6.0
+  envied: ^1.1.1
+  file_picker: ^10.1.2
+  file_saver: ^0.2.14
+  fluent_ui: ^4.11.3
+  fluentui_system_icons: ^1.1.273
   flutter:
     sdk: flutter
-  flutter_markdown: ^0.7.1
-  flutter_offline: ^3.0.1
-  flutter_riverpod: ^2.5.1
-  flutter_secure_storage: ^9.2.2
-  flutter_svg: ^2.0.10+1
+  flutter_markdown: ^0.7.7
+  flutter_offline: ^4.0.0
+  flutter_riverpod: ^2.6.1
+  flutter_svg: ^2.1.0
   gap: ^3.0.1
-  http: ^1.2.1
-  intl: ^0.18.1
+  http: ^1.3.0
+  intl: ^0.19.0
   ionicons: ^0.2.2
-  path_provider: ^2.1.3
-  pdf: ^3.10.8
-  printing: ^5.12.0
-  responsive_framework: ^1.4.0
-  sentry_flutter: ^8.2.0
-  system_theme: ^2.3.1
-  url_launcher: ^6.2.6
-  uuid: ^4.4.0
-  window_manager: ^0.3.9
+  path_provider: ^2.1.5
+  pdf: ^3.11.3
+  printing: ^5.14.2
+  responsive_framework: ^1.5.1
+  riverpod_annotation: ^2.6.1
+  sentry_flutter: ^8.14.2
+  system_theme: ^3.1.2
+  url_launcher: ^6.3.1
+  uuid: ^4.5.1
+  window_manager: ^0.4.3
 
 dev_dependencies:
-  build_runner: ^2.4.10
-  envied_generator: ^0.5.4+1
-  flutter_lints: ^4.0.0
+  build_runner: ^2.4.15
+  custom_lint: ^0.7.5
+  envied_generator: ^1.1.1
+  flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
-
-dependency_overrides:
-  intl: 0.19.0
+  riverpod_generator: ^2.6.5
+  riverpod_lint: ^2.6.5
 
 flutter:
   uses-material-design: true
