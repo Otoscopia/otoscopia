@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 
+import 'package:otoscopia/src/config/config.dart';
 import 'package:otoscopia/src/core/core.dart';
 
 class VitalsCard extends ConsumerWidget {
@@ -48,10 +49,12 @@ class VitalsCard extends ConsumerWidget {
       VitalRow(Ionicons.body, kHeight, height),
     ];
 
-    final isWeb = getDeviceType() == DeviceType.web;
-    final isMobile = getDeviceType() == DeviceType.mobile;
+    final isWeb = deviceType == DeviceType.web;
+    final isMobile = deviceType == DeviceType.mobile;
 
-    final mobile = isMobile == true ? isMobile : isWeb && MediaQuery.of(context).size.width < 400;
+    final mobile = isMobile == true
+        ? isMobile
+        : isWeb && MediaQuery.of(context).size.width < 400;
 
     return CardOpacity(
       padding: const EdgeInsets.all(16),
@@ -72,8 +75,7 @@ class VitalsCard extends ConsumerWidget {
               children: [
                 Icon(vitalSigns, color: vitalSignsColor, size: 32),
                 const Gap(8),
-                CustomText(remarks!.statusString,
-                    style: 2),
+                CustomText(remarks!.statusString, style: 2),
               ],
             ),
           if (!hasRemarks) const Gap(8),

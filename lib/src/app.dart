@@ -15,7 +15,7 @@ class MyApp extends ConsumerWidget {
     SettingsEntity settings = ref.watch(settingsProvider);
     ThemeEntity theme = ThemeEntity(settings);
 
-    bool isAuthenticated = ref.watch(authenticationProvider);
+    final isAuthenticated = ref.watch(authenticationProvider);
     UserEntity? user = ref.watch(userProvider);
     UserRole? role = isAuthenticated ? user?.role : null;
 

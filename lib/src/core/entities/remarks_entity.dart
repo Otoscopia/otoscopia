@@ -1,7 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:ionicons/ionicons.dart';
 
-import 'package:otoscopia/src/config/config.dart';
 import 'package:otoscopia/src/core/core.dart';
 
 class RemarksEntity {
@@ -64,8 +63,6 @@ class RemarksEntity {
         return Ionicons.warning_sharp;
       case RecordStatus.resolved:
         return Ionicons.checkmark_circle;
-      default:
-        return Ionicons.time_outline;
     }
   }
 
@@ -79,8 +76,6 @@ class RemarksEntity {
         return Colors.red;
       case RecordStatus.resolved:
         return Colors.green;
-      default:
-        return AppColors.accentColor.darkest;
     }
   }
 
@@ -94,8 +89,6 @@ class RemarksEntity {
         return 'Medical Attention';
       case RecordStatus.resolved:
         return 'Resolved';
-      default:
-        return 'Pending';
     }
   }
 

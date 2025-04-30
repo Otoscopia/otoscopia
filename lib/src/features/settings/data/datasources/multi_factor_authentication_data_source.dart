@@ -38,10 +38,7 @@ class MultiFactorAuthenticationDataSource {
   Future<void> disableAuthenticatorApp(String otp) async {
     try {
       // delete authenticator app
-      await _account.deleteMfaAuthenticator(
-        otp: otp,
-        type: AuthenticatorType.totp,
-      );
+      await _account.deleteMfaAuthenticator(type: AuthenticatorType.totp);
 
       // update user mfa status to false
       await _account.updateMFA(mfa: false);

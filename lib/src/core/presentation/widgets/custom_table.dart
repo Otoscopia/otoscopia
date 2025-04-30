@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:ionicons/ionicons.dart';
 
+import 'package:otoscopia/src/config/config.dart';
 import 'package:otoscopia/src/core/core.dart';
 
 class CustomTable extends ConsumerWidget {
@@ -23,8 +24,8 @@ class CustomTable extends ConsumerWidget {
 
     m3.DataTableSource source = TableSource(ref, data, context);
 
-    final isWeb = getDeviceType() == DeviceType.web;
-    final isMobile = getDeviceType() == DeviceType.mobile;
+    final isWeb = deviceType == DeviceType.web;
+    final isMobile = deviceType == DeviceType.mobile;
 
     final mobile = isMobile == true
         ? isMobile
@@ -101,8 +102,8 @@ class TableSource extends m3.DataTableSource {
     final status = table.remarks?.statusString ?? "Pending";
     final gender = patient.gender == Gender.male ? "Male" : "Female";
 
-    final isWeb = getDeviceType() == DeviceType.web;
-    final isMobile = getDeviceType() == DeviceType.mobile;
+    final isWeb = deviceType == DeviceType.web;
+    final isMobile = deviceType == DeviceType.mobile;
 
     final mobile = isMobile == true
         ? isMobile

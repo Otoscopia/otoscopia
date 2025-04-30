@@ -12,13 +12,13 @@ String _$patientsHash() => r'47d28b8b8d8b5375bee3d1d9a5bf5b6e980f6542';
 @ProviderFor(Patients)
 final patientsProvider =
     NotifierProvider<Patients, List<PatientEntity>>.internal(
-  Patients.new,
-  name: r'patientsProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$patientsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      Patients.new,
+      name: r'patientsProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product') ? null : _$patientsHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$Patients = Notifier<List<PatientEntity>>;
 // ignore_for_file: type=lint

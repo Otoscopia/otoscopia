@@ -18,14 +18,13 @@ class TitleText extends StatelessWidget {
       text,
       textAlign: center! ? TextAlign.center : TextAlign.start,
       style: FluentTheme.of(context).typography.title!.copyWith(
-            color: withOpacity
-                ? FluentTheme.of(context)
-                    .typography
-                    .title!
-                    .color!
-                    .withOpacity(0.6)
+        color:
+            withOpacity
+                ? FluentTheme.of(
+                  context,
+                ).typography.title!.color!.withValues(alpha: 0.6)
                 : null,
-          ),
+      ),
     );
   }
 }

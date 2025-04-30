@@ -16,9 +16,9 @@ class CardOpacity extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Card(
-      borderColor: AppColors.accentColor.darkest.withOpacity(.1),
+      borderColor: AppColors.accentColor.darkest.withValues(alpha: 0.1),
       padding: padding,
-      backgroundColor: FluentTheme.of(context).cardColor.withOpacity(.05),
+      backgroundColor: FluentTheme.of(context).cardColor.withValues(alpha: .05),
       borderRadius: BorderRadius.circular(10),
       child: child,
     );

@@ -12,14 +12,15 @@ String _$addPatientTabHash() => r'98d252ad0ae891e851478c2fbeda4aa167397a55';
 @ProviderFor(AddPatientTab)
 final addPatientTabProvider =
     NotifierProvider<AddPatientTab, List<Tab>>.internal(
-  AddPatientTab.new,
-  name: r'addPatientTabProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$addPatientTabHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      AddPatientTab.new,
+      name: r'addPatientTabProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$addPatientTabHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$AddPatientTab = Notifier<List<Tab>>;
 String _$addPatientIndexHash() => r'1d17d5e60062d19cbac93c6e3dc088d344e36676';
@@ -29,9 +30,10 @@ String _$addPatientIndexHash() => r'1d17d5e60062d19cbac93c6e3dc088d344e36676';
 final addPatientIndexProvider = NotifierProvider<AddPatientIndex, int>.internal(
   AddPatientIndex.new,
   name: r'addPatientIndexProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$addPatientIndexHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$addPatientIndexHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );

@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:otoscopia/src/config/config.dart';
 import 'package:otoscopia/src/core/core.dart';
 
 class Dashboard extends ConsumerWidget {
@@ -8,8 +9,8 @@ class Dashboard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isWeb = getDeviceType() == DeviceType.web;
-    final isMobile = getDeviceType() == DeviceType.mobile;
+    final isWeb = deviceType == DeviceType.web;
+    final isMobile = deviceType == DeviceType.mobile;
 
     final mobile = isMobile == true
         ? isMobile

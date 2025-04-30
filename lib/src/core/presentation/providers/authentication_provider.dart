@@ -1,7 +1,6 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'package:otoscopia/src/config/config.dart';
 import 'package:otoscopia/src/core/core.dart';
 import 'package:otoscopia/src/features/authentication/authentication.dart';
 
@@ -10,8 +9,9 @@ part 'authentication_provider.g.dart';
 @Riverpod(keepAlive: true)
 class Authentication extends _$Authentication {
   static final AuthenticationDataSource _source = AuthenticationDataSource();
-  final AuthenticationRepository _repository =
-      AuthenticationRepositoryImpl(_source);
+  final AuthenticationRepository _repository = AuthenticationRepositoryImpl(
+    _source,
+  );
 
   @override
   bool build() {
@@ -20,11 +20,10 @@ class Authentication extends _$Authentication {
 
   Future<UserEntity> login(SignInFormEntity form) async {
     try {
-      UserEntity user = await _repository.login(form);
+      final user = await _repository.login(form);
       state = true;
       ref.read(userProvider.notifier).setUser(user);
       await ref.read(fetchDataProvider.notifier).fetch(user);
-      secureStorage.write(key: "session", value: user.sessionId);
       return user;
     } on AppwriteException catch (error) {
       throw Exception(error.message);
@@ -33,7 +32,7 @@ class Authentication extends _$Authentication {
 
   Future<void> getUser(String sessionId) async {
     try {
-      UserEntity user = await _repository.getUser(sessionId);
+      final user = await _repository.getUser(sessionId);
       state = true;
       ref.read(userProvider.notifier).setUser(user);
       await ref.read(fetchDataProvider.notifier).fetch(user);
@@ -42,9 +41,7 @@ class Authentication extends _$Authentication {
     }
   }
 
-  Future<bool> signUp(
-    SignUpFormEntity form,
-  ) async {
+  Future<bool> signUp(SignUpFormEntity form) async {
     try {
       await _repository.signUp(form);
       return true;
@@ -65,7 +62,6 @@ class Authentication extends _$Authentication {
     UserEntity user = ref.read(userProvider)!;
     try {
       await _repository.logout(user.sessionId);
-      await secureStorage.delete(key: 'session');
 
       state = false;
 

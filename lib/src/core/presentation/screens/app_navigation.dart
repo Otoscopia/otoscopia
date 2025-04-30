@@ -39,8 +39,8 @@ class AppNavigation extends ConsumerWidget {
       });
     }
 
-    final isWeb = getDeviceType() == DeviceType.web;
-    final isMobile = getDeviceType() == DeviceType.mobile;
+    final isWeb = deviceType == DeviceType.web;
+    final isMobile = deviceType == DeviceType.mobile;
 
     final mobile = isWeb && MediaQuery.of(context).size.width < 400 || isMobile;
 

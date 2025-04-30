@@ -13,14 +13,15 @@ String _$screeningInformationHash() =>
 @ProviderFor(ScreeningInformation)
 final screeningInformationProvider =
     NotifierProvider<ScreeningInformation, ScreeningEntity?>.internal(
-  ScreeningInformation.new,
-  name: r'screeningInformationProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$screeningInformationHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      ScreeningInformation.new,
+      name: r'screeningInformationProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$screeningInformationHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$ScreeningInformation = Notifier<ScreeningEntity?>;
 // ignore_for_file: type=lint

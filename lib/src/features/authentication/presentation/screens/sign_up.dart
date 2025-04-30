@@ -27,105 +27,98 @@ class _SignUpState extends ConsumerState<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    return ApplicationContainer(
-      child: CenterCard(
-        child: Form(
-          key: formKey,
-          child: SizedBox(
-            width: 440,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Logo(height: 32),
-                const Gap(16),
-                const Text(kSignUp, style: TextStyle(fontSize: 24)),
-                const Gap(12),
-                EmailTextInput(emailController: _form.emailController),
-                const Gap(16),
-                PasswordFormBox(
-                  controller: _form.passwordController,
-                  placeholder: kPassword,
-                  onEditingComplete: onClick,
-                ),
-                const Gap(16),
-                TextFormBox(
-                  placeholder: kFullName,
-                  controller: _form.nameController,
-                ),
-                const Gap(16),
-                TextFormBox(
-                  placeholder: kPhoneNumber,
-                  controller: _form.phoneController,
-                  prefix: const Padding(
-                    padding: EdgeInsets.only(left: 12.0),
-                    child: Text(kCountryCode),
-                  ),
-                  maxLength: 10,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9\+]'))
-                  ],
-                ),
-                const Gap(16),
-                TextFormBox(
-                  placeholder: kWorkAddress,
-                  controller: _form.addressController,
-                ),
-                const Gap(16),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ComboBox(
-                        isExpanded: true,
-                        placeholder: const Text(kRole),
-                        items: roles,
-                        value: _form.role,
-                        onChanged: (value) => setState(() {
-                          if (value == kDoctor) {
-                            _form.schools.clear();
-                          }
-                          _form.role = value!;
-                        }),
-                      ),
-                    ),
-                    if (_form.role == kNurse) const Gap(16),
-                    if (_form.role == kNurse)
-                      FutureBuilder(
-                        future: getSchools(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const ProgressRing();
-                          }
-
-                          final schools = ref.read(schoolsProvider);
-
-                          items = schools
-                              .map((item) => TreeViewItem(
-                                    content: Text(item.name),
-                                    value: item,
-                                  ))
-                              .toList();
-
-                          return Button(
-                            child: const Text(kAddSchools),
-                            onPressed: () => showContentDialog(context),
-                          );
-                        },
-                      ),
-                  ],
-                ),
-                const Gap(16),
-                const TextNavigator(kAlreadyHaveAnAccount, pop: true),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    if (!isLoading) signInBtn() else const ProgressRing(),
-                  ],
-                ),
+    return Form(
+      key: formKey,
+      child: SizedBox(
+        width: 440,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(kSignUp, style: TextStyle(fontSize: 24)),
+            const Gap(12),
+            EmailTextInput(emailController: _form.emailController),
+            const Gap(16),
+            PasswordFormBox(
+              controller: _form.passwordController,
+              placeholder: kPassword,
+              onEditingComplete: onClick,
+            ),
+            const Gap(16),
+            TextFormBox(
+              placeholder: kFullName,
+              controller: _form.nameController,
+            ),
+            const Gap(16),
+            TextFormBox(
+              placeholder: kPhoneNumber,
+              controller: _form.phoneController,
+              prefix: const Padding(
+                padding: EdgeInsets.only(left: 12.0),
+                child: Text(kCountryCode),
+              ),
+              maxLength: 10,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9\+]'))
               ],
             ),
-          ),
+            const Gap(16),
+            TextFormBox(
+              placeholder: kWorkAddress,
+              controller: _form.addressController,
+            ),
+            const Gap(16),
+            Row(
+              children: [
+                Expanded(
+                  child: ComboBox(
+                    isExpanded: true,
+                    placeholder: const Text(kRole),
+                    items: roles,
+                    value: _form.role,
+                    onChanged: (value) => setState(() {
+                      if (value == kDoctor) {
+                        _form.schools.clear();
+                      }
+                      _form.role = value!;
+                    }),
+                  ),
+                ),
+                if (_form.role == kNurse) const Gap(16),
+                if (_form.role == kNurse)
+                  FutureBuilder(
+                    future: getSchools(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const ProgressRing();
+                      }
+
+                      final schools = ref.read(schoolsProvider);
+
+                      items = schools
+                          .map((item) => TreeViewItem(
+                                content: Text(item.name),
+                                value: item,
+                              ))
+                          .toList();
+
+                      return Button(
+                        child: const Text(kAddSchools),
+                        onPressed: () => showContentDialog(context),
+                      );
+                    },
+                  ),
+              ],
+            ),
+            const Gap(16),
+            const TextNavigator(kAlreadyHaveAnAccount, pop: true),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                if (!isLoading) signUpBtn() else const ProgressRing(),
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -167,9 +160,9 @@ class _SignUpState extends ConsumerState<SignUp> {
     setState(() {});
   }
 
-  Button signInBtn() {
+  Button signUpBtn() {
     return Button(
-        child: const Text(kSignInBtn),
+        child: const Text(kSignUpBtn),
         onPressed: () async {
           if (_form.isValid) {
             await onClick();

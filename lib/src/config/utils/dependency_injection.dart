@@ -1,17 +1,23 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
+
 import 'package:appwrite/appwrite.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:system_theme/system_theme.dart';
 import 'package:uuid/uuid.dart';
 
+import 'package:otoscopia/src/config/config.dart';
 import 'package:otoscopia/src/core/core.dart';
 
 import 'desktop_dependency.dart';
 
 late final Client client;
 late final Realtime realtime;
+late final Functions functions;
 late final Uuid uuid;
 late final String applicationDirectory;
 late final String documentDirectory;
-late final FlutterSecureStorage secureStorage;
+late final DeviceType deviceType;
 
 class DependencyInjection {
   static final DependencyInjection _singleton = DependencyInjection._internal();
@@ -22,12 +28,15 @@ class DependencyInjection {
 
   DependencyInjection._internal();
 
-  Future<void> init(DeviceType deviceType) async {
+  Future<void> init() async {
     uuid = const Uuid();
 
-    secureStorage = const FlutterSecureStorage();
+    SystemTheme.fallbackColor = AppColors.secondary;
+    await SystemTheme.accentColor.load();
 
     await appwriteInit();
+
+    deviceType = getDeviceType();
 
     switch (deviceType) {
       case DeviceType.mobile:
@@ -50,5 +59,16 @@ class DependencyInjection {
     client = Client();
     client.setEndpoint(Env.endpoint).setProject(Env.project);
     realtime = Realtime(client);
+    functions = Functions(client);
+  }
+
+  DeviceType getDeviceType() {
+    if (kIsWeb) {
+      return DeviceType.web;
+    } else if (Platform.isAndroid || Platform.isIOS) {
+      return DeviceType.mobile;
+    } else {
+      return DeviceType.desktop;
+    }
   }
 }

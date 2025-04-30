@@ -6,16 +6,17 @@ part of 'authentication_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$authenticationHash() => r'497dd4d8cb3ef8d0fbf3f4f6ae02d0baf8e05076';
+String _$authenticationHash() => r'fa9fa2d77b6148e5556338f84789fe249c83fce9';
 
 /// See also [Authentication].
 @ProviderFor(Authentication)
 final authenticationProvider = NotifierProvider<Authentication, bool>.internal(
   Authentication.new,
   name: r'authenticationProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$authenticationHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$authenticationHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );

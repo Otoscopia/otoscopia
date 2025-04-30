@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:system_theme/system_theme.dart';
 
 import 'package:otoscopia/application.dart';
 import 'package:otoscopia/src/app.dart';
@@ -11,16 +10,11 @@ import 'package:otoscopia/src/config/config.dart';
 import 'package:otoscopia/src/core/core.dart';
 
 Future<void> main() async {
-  const sentryRelease = '$kPackageName@${ApplicationConfig.currentVersion}';
-
-  SystemTheme.fallbackColor = AppColors.secondary;
-  await SystemTheme.accentColor.load();
-
   WidgetsFlutterBinding.ensureInitialized();
 
-  DeviceType deviceType = getDeviceType();
+  const sentryRelease = '$kPackageName@${ApplicationConfig.currentVersion}';
 
-  await DependencyInjection().init(deviceType);
+  await DependencyInjection().init();
 
   if (kDebugMode) {
     runApp(ProviderScope(child: MyApp(deviceType)));

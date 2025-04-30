@@ -27,9 +27,10 @@ String _$dashboardIndexHash() => r'733ad999d88c06a276ee320ee53be910995887a7';
 final dashboardIndexProvider = NotifierProvider<DashboardIndex, int>.internal(
   DashboardIndex.new,
   name: r'dashboardIndexProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$dashboardIndexHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$dashboardIndexHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );

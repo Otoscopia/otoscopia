@@ -27,9 +27,10 @@ String _$patientsIndexHash() => r'aadea7f4371ff00f62f0f21a9fa7fbeebcd0081a';
 final patientsIndexProvider = NotifierProvider<PatientsIndex, int>.internal(
   PatientsIndex.new,
   name: r'patientsIndexProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$patientsIndexHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$patientsIndexHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
