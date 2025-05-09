@@ -13,9 +13,9 @@ abstract class FetchDataRepository {
 
   Future<List<PatientEntity>> getPatientsByDoctor(String id);
 
-  Future<List<UsersEntity>> getDoctors();
+  Future<List<UserEntity>> getDoctors();
 
-  Future<List<UsersEntity>> getNurses();
+  Future<List<UserEntity>> getNurses();
 
   Future<List<ScreeningEntity>> getScreeningsByPatient(List<String> patients);
 

@@ -13,23 +13,32 @@ class Table extends _$Table {
     return [];
   }
 
-  void setTable(List<PatientEntity> patients, List<ScreeningEntity> screenings,
-      List<RemarksEntity> remarks) {
+  void setTable(
+    List<PatientEntity> patients,
+    List<ScreeningEntity> screenings,
+    List<RemarksEntity> remarks,
+  ) {
     patients.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-    final tables = screenings.map((screening) {
-      final patient =
-          patients.firstWhere((patient) => patient.id == screening.patient);
+    final tables =
+        screenings.map((screening) {
+          final patient = patients.firstWhere(
+            (patient) => patient.id == screening.patient,
+          );
 
-      final remark =
-          remarks.where((element) => element.screening == screening.id);
+          final remark = remarks.where(
+            (element) => element.screening == screening.id,
+          );
 
-      if (remark.length > 1) {
-        remarks.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
-      }
+          if (remark.length > 1) {
+            remarks.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+          }
 
-      return TableEntity(
-          patient: patient, screening: screening, remarks: remark.firstOrNull);
-    }).toList();
+          return TableEntity(
+            patient: patient,
+            screening: screening,
+            remarks: remark.firstOrNull,
+          );
+        }).toList();
 
     final data = tables.reversed.toList();
 
@@ -71,7 +80,7 @@ class Table extends _$Table {
     final user = ref.read(userProvider)!;
     final patient = PatientEntity.fromMap(snapshot);
 
-    if (patient.doctor == user.id) {
+    if (patient.doctor == user.uid) {
       final screening = await ref
           .read(fetchDataProvider.notifier)
           .getScreeningsByPatientId(patient.id);
@@ -80,9 +89,10 @@ class Table extends _$Table {
       ref.read(screeningsProvider.notifier).addScreening(screening);
     } else if (user.role == UserRole.nurse) {
       final assignments = ref.read(assignmentsProvider);
-      final AssignmentEntity? assignment = assignments
-          .where((element) => element.school == patient.school)
-          .firstOrNull;
+      final AssignmentEntity? assignment =
+          assignments
+              .where((element) => element.school == patient.school)
+              .firstOrNull;
 
       if (assignment != null) {
         ref.read(patientsProvider.notifier).addPatient(patient);
@@ -94,16 +104,17 @@ class Table extends _$Table {
     final user = ref.read(userProvider)!;
     final patient = PatientEntity.fromMap(snapshot['patient']);
 
-    if (patient.doctor == user.id) {
+    if (patient.doctor == user.uid) {
       final screening = ScreeningEntity.fromMap(snapshot);
       addTable(TableEntity(patient: patient, screening: screening));
       ref.read(patientsProvider.notifier).addPatient(patient);
       ref.read(screeningsProvider.notifier).addScreening(screening);
     } else if (user.role == UserRole.nurse) {
       final assignments = ref.read(assignmentsProvider);
-      final AssignmentEntity? assignment = assignments
-          .where((element) => element.school == patient.school)
-          .firstOrNull;
+      final AssignmentEntity? assignment =
+          assignments
+              .where((element) => element.school == patient.school)
+              .firstOrNull;
 
       if (assignment != null) {
         final screening = ScreeningEntity.fromMap(snapshot);
@@ -121,20 +132,22 @@ class Table extends _$Table {
     final patient = ref.read(patientsProvider.notifier).findByName(patientName);
 
     if (patient != null) {
-      if (patient.doctor == user.id) {
+      if (patient.doctor == user.uid) {
         final screening = ScreeningEntity.fromMap(snapshot['screening']);
         final remarks = RemarksEntity.fromMap(snapshot);
 
-        addTable(TableEntity(
-            patient: patient, screening: screening, remarks: remarks));
+        addTable(
+          TableEntity(patient: patient, screening: screening, remarks: remarks),
+        );
         ref.read(patientsProvider.notifier).addPatient(patient);
         ref.read(screeningsProvider.notifier).addScreening(screening);
         ref.read(screeningsProvider.notifier).addScreening(screening);
       } else if (user.role == UserRole.nurse) {
         final assignments = ref.read(assignmentsProvider);
-        final AssignmentEntity? assignment = assignments
-            .where((element) => element.school == patient.school)
-            .firstOrNull;
+        final AssignmentEntity? assignment =
+            assignments
+                .where((element) => element.school == patient.school)
+                .firstOrNull;
 
         if (assignment != null) {
           final screening = ScreeningEntity.fromMap(snapshot['screening']);
@@ -142,8 +155,13 @@ class Table extends _$Table {
 
           ref.read(patientsProvider.notifier).addPatient(patient);
           ref.read(screeningsProvider.notifier).addScreening(screening);
-          addTable(TableEntity(
-              patient: patient, screening: screening, remarks: remarks));
+          addTable(
+            TableEntity(
+              patient: patient,
+              screening: screening,
+              remarks: remarks,
+            ),
+          );
         }
       }
     }

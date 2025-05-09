@@ -5,6 +5,7 @@ import 'package:file_saver/file_saver.dart';
 
 import 'package:otoscopia/src/config/config.dart';
 import 'package:otoscopia/src/core/core.dart';
+import 'package:otoscopia/src/core/functions/get_ids.dart';
 
 class FetchImageDataSource {
   final Storage _storage;
@@ -12,7 +13,7 @@ class FetchImageDataSource {
   FetchImageDataSource() : _storage = Storage(client);
 
   Future<List<Uint8List>> getImages(String path, List<String> ids) async {
-    final bucketId = Env.screeningBucket;
+    final bucketId = getBucketId('screenings');
     final List<Uint8List> images = [];
 
     try {
@@ -38,7 +39,7 @@ class FetchImageDataSource {
   }
 
   Future<List<PrescriptionEntity>> getPrescription(List<String> id) async {
-    final bucketId = Env.prescriptionsBucket;
+    final bucketId = getBucketId('prescriptions');
     final List<PrescriptionEntity> images = [];
 
     try {
@@ -49,11 +50,9 @@ class FetchImageDataSource {
           fileId: id,
         );
 
-        images.add(PrescriptionEntity(
-          id: file.$id,
-          name: file.name,
-          image: result,
-        ));
+        images.add(
+          PrescriptionEntity(id: file.$id, name: file.name, image: result),
+        );
       }
 
       return images;
@@ -65,7 +64,7 @@ class FetchImageDataSource {
   }
 
   Future<void> downloadPrescription(PrescriptionEntity prescription) async {
-    final bucketId = Env.prescriptionsBucket;
+    final bucketId = getBucketId('prescriptions');
 
     try {
       final response = await _storage.getFileDownload(

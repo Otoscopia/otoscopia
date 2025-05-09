@@ -2,20 +2,21 @@ import 'package:appwrite/appwrite.dart';
 
 import 'package:otoscopia/src/config/config.dart';
 import 'package:otoscopia/src/core/core.dart';
+import 'package:otoscopia/src/core/functions/get_ids.dart';
 
 class PostDataDataSource {
   final Databases _databases;
   final Storage _storage;
 
   PostDataDataSource()
-      : _databases = Databases(client),
-        _storage = Storage(client);
+    : _databases = Databases(client),
+      _storage = Storage(client);
 
   Future<void> postPatient(PatientEntity patient) async {
     try {
       await _databases.createDocument(
         databaseId: Env.database,
-        collectionId: Env.patientCollection,
+        collectionId: getCollectionId('patients'),
         data: patient.toMap(),
         documentId: patient.id,
       );
@@ -25,7 +26,7 @@ class PostDataDataSource {
   }
 
   Future<void> postScreening(ScreeningEntity screening) async {
-    final bucketId = Env.screeningBucket;
+    final bucketId = getBucketId('screenings');
     try {
       List<String> images = [];
 
@@ -48,7 +49,7 @@ class PostDataDataSource {
 
       await _databases.createDocument(
         databaseId: Env.database,
-        collectionId: Env.screeningCollection,
+        collectionId: getCollectionId('screenings'),
         documentId: screening.id,
         data: modified.toMap(),
       );

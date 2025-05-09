@@ -10,19 +10,19 @@ class UserInformation extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider)!;
-    final role = user.role == UserRole.doctor ? "Doctor" : "Nurse";
+    final role = user.role.name.uppercaseFirst();
     return Row(
       children: [
-        CircularImage(user.image!, size: 100.0),
+        CircularImage(user.avatar ?? 'https://picsum.photos/200', size: 100.0),
         const Gap(12),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomText(user.name.toUpperCase(), style: 4),
+            CustomText(user.readableName.toUpperCase(), style: 4),
             CustomText(user.email),
             CustomText(role),
           ],
-        )
+        ),
       ],
     );
   }

@@ -6,11 +6,11 @@ part of 'nurses_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$nursesHash() => r'bc72d0d9b41b523604d617c576fdde744dcc22f1';
+String _$nursesHash() => r'a61310a42e21179cc0b577f0b293a4b5360ccb28';
 
 /// See also [Nurses].
 @ProviderFor(Nurses)
-final nursesProvider = NotifierProvider<Nurses, List<UsersEntity>>.internal(
+final nursesProvider = NotifierProvider<Nurses, List<UserEntity>>.internal(
   Nurses.new,
   name: r'nursesProvider',
   debugGetCreateSourceHash:
@@ -19,6 +19,6 @@ final nursesProvider = NotifierProvider<Nurses, List<UsersEntity>>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef _$Nurses = Notifier<List<UsersEntity>>;
+typedef _$Nurses = Notifier<List<UserEntity>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

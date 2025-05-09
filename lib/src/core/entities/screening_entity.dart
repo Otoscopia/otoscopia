@@ -51,27 +51,28 @@ class ScreeningEntity {
     this.oldScreening,
   });
 
-  ScreeningEntity copyWith(
-      {String? id,
-      String? patient,
-      String? historyOfIllness,
-      String? remarks,
-      double? temperature,
-      double? weight,
-      double? height,
-      bool? similarCondition,
-      List<bool>? chiefComplaint,
-      String? chiefComplaintRemarks,
-      bool? allergy,
-      String? allergyRemarks,
-      bool? undergoneSurgery,
-      String? undergoneSurgeryRemarks,
-      bool? medication,
-      String? medicationRemarks,
-      List<String>? images,
-      DateTime? createdAt,
-      DateTime? updatedAt,
-      String? oldScreening}) {
+  ScreeningEntity copyWith({
+    String? id,
+    String? patient,
+    String? historyOfIllness,
+    String? remarks,
+    double? temperature,
+    double? weight,
+    double? height,
+    bool? similarCondition,
+    List<bool>? chiefComplaint,
+    String? chiefComplaintRemarks,
+    bool? allergy,
+    String? allergyRemarks,
+    bool? undergoneSurgery,
+    String? undergoneSurgeryRemarks,
+    bool? medication,
+    String? medicationRemarks,
+    List<String>? images,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? oldScreening,
+  }) {
     return ScreeningEntity(
       id: id ?? this.id,
       patient: patient ?? this.patient,
@@ -101,22 +102,22 @@ class ScreeningEntity {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'patient': patient,
-      'historyOfIllness': historyOfIllness,
+      'history_of_illness': historyOfIllness,
       'remarks': remarks,
       'temperature': temperature,
       'weight': weight,
       'height': height,
-      'similarCondition': similarCondition,
-      'chiefComplaint': chiefComplaint,
-      'chiefComplaintRemarks': chiefComplaintRemarks,
+      'similar_condition': similarCondition,
+      'chief_complaint': chiefComplaint,
+      'chief_complaint_remarks': chiefComplaintRemarks,
       'allergy': allergy,
-      'allergyRemarks': allergyRemarks,
-      'undergoneSurgery': undergoneSurgery,
-      'undergoneSurgeryRemarks': undergoneSurgeryRemarks,
+      'allergy_remarks': allergyRemarks,
+      'undergone_surgery': undergoneSurgery,
+      'undergone_surgery_remarks': undergoneSurgeryRemarks,
       'medication': medication,
-      'medicationRemarks': medicationRemarks,
+      'medication_remarks': medicationRemarks,
       'images': images,
-      'oldScreening': oldScreening,
+      'old_screening': oldScreening,
     };
   }
 
@@ -124,24 +125,24 @@ class ScreeningEntity {
     return ScreeningEntity(
       id: map['\$id'] as String,
       patient: map['patient']['\$id'] as String,
-      historyOfIllness: map['historyOfIllness'] as String,
+      historyOfIllness: map['history_of_illness'] as String,
       remarks: map['remarks'] as String,
       temperature: double.parse(map['temperature'].toString()),
       weight: double.parse(map['weight'].toString()),
       height: double.parse(map['height'].toString()),
-      similarCondition: map['similarCondition'] as bool,
-      chiefComplaint: List<bool>.from(map['chiefComplaint']),
-      chiefComplaintRemarks: map['chiefComplaintRemarks'] as String,
+      similarCondition: map['similar_condition'] as bool,
+      chiefComplaint: List<bool>.from(map['chief_complaint']),
+      chiefComplaintRemarks: map['chief_complaint_remarks'] as String,
       allergy: map['allergy'] as bool,
-      allergyRemarks: map['allergyRemarks'] as String,
-      undergoneSurgery: map['undergoneSurgery'] as bool,
-      undergoneSurgeryRemarks: map['undergoneSurgeryRemarks'] as String,
+      allergyRemarks: map['allergy_remarks'] as String,
+      undergoneSurgery: map['undergone_surgery'] as bool,
+      undergoneSurgeryRemarks: map['undergone_surgery_remarks'] as String,
       medication: map['medication'] as bool,
-      medicationRemarks: map['medicationRemarks'] as String,
+      medicationRemarks: map['medication_remarks'] as String,
       images: List<String>.from((map['images'])),
       createdAt: DateTime.parse(map['\$createdAt'] as String),
       updatedAt: DateTime.parse(map['\$updatedAt'] as String),
-      oldScreening: map['oldScreening'] as String?,
+      oldScreening: map['old_screening'] as String?,
     );
   }
 
@@ -235,44 +236,46 @@ class ScreeningEntity {
   }
 
   String get chiefComplaintString {
-    final chiefComplainString = List.generate(chiefComplaint.length, (index) {
-      if (chiefComplaint[index]) {
-        switch (index) {
-          case 0:
-            return 'Ear Pain';
-          case 1:
-            return 'Hearing Loss';
-          case 2:
-            return 'Tinnitus';
-          case 3:
-            return 'Ear Discharge';
-          case 4:
-            return 'Others';
-          default:
+    final chiefComplainString =
+        List.generate(chiefComplaint.length, (index) {
+          if (chiefComplaint[index]) {
+            switch (index) {
+              case 0:
+                return 'Ear Pain';
+              case 1:
+                return 'Hearing Loss';
+              case 2:
+                return 'Tinnitus';
+              case 3:
+                return 'Ear Discharge';
+              case 4:
+                return 'Others';
+              default:
+                return '';
+            }
+          } else {
             return '';
-        }
-      } else {
-        return '';
-      }
-    }).toString();
+          }
+        }).toString();
 
     final arrayComplains = chiefComplainString
         .substring(1, chiefComplainString.length - 1)
         .split(', ');
     final nonEmptyComplains =
         arrayComplains.where((element) => element.isNotEmpty).toList();
-    final joinedComplains = nonEmptyComplains.asMap().entries.map((entry) {
-      final index = entry.key;
-      final complain = entry.value;
+    final joinedComplains =
+        nonEmptyComplains.asMap().entries.map((entry) {
+          final index = entry.key;
+          final complain = entry.value;
 
-      if (index == nonEmptyComplains.length - 1) {
-        return complain;
-      } else if (index == nonEmptyComplains.length - 2) {
-        return '$complain and ';
-      } else {
-        return '$complain, ';
-      }
-    }).join();
+          if (index == nonEmptyComplains.length - 1) {
+            return complain;
+          } else if (index == nonEmptyComplains.length - 2) {
+            return '$complain and ';
+          } else {
+            return '$complain, ';
+          }
+        }).join();
 
     return joinedComplains;
   }

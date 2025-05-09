@@ -15,14 +15,10 @@ class User extends _$User {
     state = user;
   }
 
-  void updateInformation({
-    String? name,
-    String? phone,
-    String? workAddress,
-  }) {
+  void updateInformation({String? name, String? phone, String? workAddress}) {
     final user = state!.copyWith(
-      name: name,
-      phone: phone,
+      readableName: name,
+      contactNumber: phone,
       workAddress: workAddress,
     );
 
@@ -30,7 +26,8 @@ class User extends _$User {
   }
 
   void updateMfa(bool mfa) {
-    final user = state!.updateMfaFactors(mfa);
+    final user = state!.copyWith(mfaEnabled: mfa);
+
     setUser(user);
   }
 }

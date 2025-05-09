@@ -17,7 +17,7 @@ class AccountSecurity extends ConsumerWidget {
     const width = 150.0;
 
     final user = ref.read(userProvider)!;
-    final authenticatorApp = user.mfaFactors.totp;
+    final authenticatorApp = user.mfaEnabled;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,14 +27,19 @@ class AccountSecurity extends ConsumerWidget {
             leading: const Icon(FluentIcons.authenticator_app),
             title: const CustomText('Enable/Disable Authenticator App'),
             subtitle: const CustomText(
-                'Enable or disable authenticator app for your account'),
+              'Enable or disable authenticator app for your account',
+            ),
             trailing: Button(
-              onPressed: () async => authenticatorApp
-                  ? disableMfaFunction(context)
-                  : enableMfaFunction(context, ref),
-              child: CustomText(authenticatorApp
-                  ? 'Disable Authenticator App'
-                  : 'Enable Authenticator App'),
+              onPressed:
+                  () async =>
+                      authenticatorApp
+                          ? disableMfaFunction(context)
+                          : enableMfaFunction(context, ref),
+              child: CustomText(
+                authenticatorApp
+                    ? 'Disable Authenticator App'
+                    : 'Enable Authenticator App',
+              ),
             ),
           ),
         ),
@@ -58,8 +63,9 @@ class AccountSecurity extends ConsumerWidget {
           child: ListTile(
             leading: Icon(FluentIcons.delete),
             title: CustomText('Delete Account'),
-            subtitle:
-                CustomText('Ask admin to delete your account permanently'),
+            subtitle: CustomText(
+              'Ask admin to delete your account permanently',
+            ),
             trailing: SizedBox(
               width: width,
               child: Button(

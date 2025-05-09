@@ -18,10 +18,11 @@ class PatientInformationCard extends ConsumerWidget {
     final guardian = _patient.guardian;
     final guardianPhone = _patient.guardianPhone;
     final school = ref.read(schoolsProvider.notifier).findById(_patient.school);
-    final doctor = ref.read(doctorsProvider.notifier).findById(_patient.doctor);
+    final doctor = _patient.doctor;
     final code = _patient.code;
-    final assignment =
-        ref.read(assignmentsProvider.notifier).findBySchool(_patient.school);
+    final assignment = ref
+        .read(assignmentsProvider.notifier)
+        .findBySchool(_patient.school);
     final nurse = ref.read(nursesProvider.notifier).findById(assignment.nurse);
 
     return CardOpacity(
@@ -33,8 +34,13 @@ class PatientInformationCard extends ConsumerWidget {
           CustomText("$age/$gender", style: 3),
           CustomText("$guardian, $guardianPhone", style: 3),
           CustomText(school.name, style: 3),
-          if (isDoctor) CustomText("$kAssignedNurse ${nurse.name}", style: 3),
-          if (isNurse) CustomText("$kAssignedDoctor ${doctor.name}", style: 3),
+          if (isDoctor)
+            CustomText("$kAssignedNurse ${nurse.readableName}", style: 3),
+          if (isNurse)
+            CustomText(
+              "$kAssignedDoctor ${doctor?['readable_name']}",
+              style: 3,
+            ),
           CustomText("$kPatientCode $code", style: 3),
         ],
       ),

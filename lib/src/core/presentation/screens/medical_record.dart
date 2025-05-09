@@ -33,9 +33,10 @@ class _MedicalRecordState extends ConsumerState<MedicalRecord> {
     super.initState();
     isDoctor = ref.read(userProvider)!.isDoctor;
 
-    recordStatus = widget._table.remarks != null
-        ? widget._table.remarks!.status
-        : RecordStatus.pending;
+    recordStatus =
+        widget._table.remarks != null
+            ? widget._table.remarks!.status
+            : RecordStatus.pending;
     table = widget._table;
   }
 
@@ -60,13 +61,7 @@ class _MedicalRecordState extends ConsumerState<MedicalRecord> {
           controller: controller,
           child: Stack(
             children: [
-              _buildRecord(
-                patient,
-                modified,
-                screening,
-                remarks,
-                connection,
-              ),
+              _buildRecord(patient, modified, screening, remarks, connection),
               if (isDoctor)
                 Positioned(
                   right: 32,
@@ -96,35 +91,22 @@ class _MedicalRecordState extends ConsumerState<MedicalRecord> {
     bool connection, {
     bool hasOldScreening = false,
     bool isPreview = false,
-  }) =>
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (!hasOldScreening) PatientInformationCard(patient),
-          if (!hasOldScreening) const Gap(8),
-          if (modified && !isPreview) DoctorsRemarkCard(screening),
-          if (modified && !isPreview) const Gap(8),
-          VitalsCard(
-            screening,
-            remarks: remarks,
-            isOverview: isPreview,
-          ),
-          const Gap(8),
-          ScreeningInformationCard(screening),
-          const Gap(8),
-          EarImages(
-            "$kLeftEar:",
-            table!.screening.images,
-            isNetwork: connection,
-          ),
-          const Gap(8),
-          EarImages(
-            "$kRightEar:",
-            table!.screening.images,
-            isNetwork: connection,
-          ),
-        ],
-      );
+  }) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      if (!hasOldScreening) PatientInformationCard(patient),
+      if (!hasOldScreening) const Gap(8),
+      if (modified && !isPreview) DoctorsRemarkCard(screening),
+      if (modified && !isPreview) const Gap(8),
+      VitalsCard(screening, remarks: remarks, isOverview: isPreview),
+      const Gap(8),
+      ScreeningInformationCard(screening),
+      const Gap(8),
+      EarImages("$kLeftEar:", table!.screening.images, isNetwork: connection),
+      const Gap(8),
+      EarImages("$kRightEar:", table!.screening.images, isNetwork: connection),
+    ],
+  );
 
   void onRightClick(TapUpDetails details) {
     final targetContext = contextAttacKey.currentContext;
@@ -135,7 +117,7 @@ class _MedicalRecordState extends ConsumerState<MedicalRecord> {
       ancestor: Navigator.of(context).context.findRenderObject(),
     );
 
-    final doctors = isDoctor ? ref.read(doctorsProvider) : <UsersEntity>[];
+    final doctors = isDoctor ? ref.read(doctorsProvider) : <UserEntity>[];
 
     controller.showFlyout(
       position: position,
@@ -150,8 +132,8 @@ class _MedicalRecordState extends ConsumerState<MedicalRecord> {
                   Flyout.of(context).close();
                   WidgetsFlutterBinding.ensureInitialized()
                       .addPostFrameCallback((timeStamp) async {
-                    await showEditContent();
-                  });
+                        await showEditContent();
+                      });
                 },
               ),
             MenuFlyoutItem(
@@ -185,22 +167,26 @@ class _MedicalRecordState extends ConsumerState<MedicalRecord> {
               MenuFlyoutSubItem(
                 leading: const Icon(FluentIcons.account_management),
                 text: const Text('Refer to'),
-                items: (_) => doctors
-                    .map(
-                      (doctor) => MenuFlyoutItem(
-                        text: Text(doctor.name),
-                        onPressed: () async {
-                          final response = await showReferConfirmation(doctor);
+                items:
+                    (_) =>
+                        doctors
+                            .map(
+                              (doctor) => MenuFlyoutItem(
+                                text: Text(doctor.readableName),
+                                onPressed: () async {
+                                  final response = await showReferConfirmation(
+                                    doctor,
+                                  );
 
-                          if (response) {
-                            ref
-                                .read(dashboardTabProvider.notifier)
-                                .removeTab(widget._table.patient.name);
-                          }
-                        },
-                      ),
-                    )
-                    .toList(),
+                                  if (response) {
+                                    ref
+                                        .read(dashboardTabProvider.notifier)
+                                        .removeTab(widget._table.patient.name);
+                                  }
+                                },
+                              ),
+                            )
+                            .toList(),
               ),
           ],
         );
@@ -208,14 +194,14 @@ class _MedicalRecordState extends ConsumerState<MedicalRecord> {
     );
   }
 
-  Future<bool> showReferConfirmation(UsersEntity doctor) async {
+  Future<bool> showReferConfirmation(UserEntity doctor) async {
     return await showDialog<bool>(
           context: context,
           builder: (context) {
             return ContentDialog(
               title: const CustomText("Refer Patient"),
               content: CustomText(
-                "Are you sure you want to refer this patient? to ${doctor.name}",
+                "Are you sure you want to refer this patient? to ${doctor.readableName}",
               ),
               actions: [
                 Button(
@@ -223,7 +209,7 @@ class _MedicalRecordState extends ConsumerState<MedicalRecord> {
                   onPressed: () async {
                     ref
                         .read(postRemarkProvider.notifier)
-                        .referDoctor(table!.patient.id, doctor.id);
+                        .referDoctor(table!.patient.id, doctor.uid);
                     Navigator.of(context).pop(true);
                   },
                 ),
@@ -285,34 +271,39 @@ class _MedicalRecordState extends ConsumerState<MedicalRecord> {
     final isRemarksNotEmpty = remarksController.text != "";
     final isResolved =
         recordStatus == RecordStatus.resolved && isRemarksNotEmpty;
-    final isMedicalAttention = (recordStatus == RecordStatus.medicalAttention &&
-        (date != null && location.text != "" && isRemarksNotEmpty));
-    final isFollowUp = recordStatus == RecordStatus.followUp &&
+    final isMedicalAttention =
+        (recordStatus == RecordStatus.medicalAttention &&
+            (date != null && location.text != "" && isRemarksNotEmpty));
+    final isFollowUp =
+        recordStatus == RecordStatus.followUp &&
         (imageBytes.isNotEmpty && isRemarksNotEmpty);
 
     if (isResolved || isMedicalAttention || isFollowUp) {
-      final remarksEntity =
-          await ref.read(postRemarkProvider.notifier).postRemark(
-                remarksController.text,
-                date,
-                table!.screening.id,
-                location.text,
-                recordStatus!,
-                imageBytes,
-                table!.screening.id,
-                names,
-              );
+      final remarksEntity = await ref
+          .read(postRemarkProvider.notifier)
+          .postRemark(
+            remarksController.text,
+            date,
+            table!.screening.id,
+            location.text,
+            recordStatus!,
+            imageBytes,
+            table!.screening.id,
+            names,
+          );
 
       setState(() {
-        table = table = TableEntity(
-          patient: table!.patient,
-          screening: table!.screening,
-          remarks: remarksEntity,
-        );
+        table =
+            table = TableEntity(
+              patient: table!.patient,
+              screening: table!.screening,
+              remarks: remarksEntity,
+            );
       });
 
-      WidgetsFlutterBinding.ensureInitialized()
-          .addPostFrameCallback((timeStamp) {
+      WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((
+        timeStamp,
+      ) {
         Navigator.of(context).pop();
         remarksController.text = "";
         location.text = "";
@@ -321,9 +312,10 @@ class _MedicalRecordState extends ConsumerState<MedicalRecord> {
       });
     } else {
       popUpInfoBar(
-          kErrorTitle,
-          "Inputs are required and must be completed before submission.",
-          context);
+        kErrorTitle,
+        "Inputs are required and must be completed before submission.",
+        context,
+      );
     }
   }
 }

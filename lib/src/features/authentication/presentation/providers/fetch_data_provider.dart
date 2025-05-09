@@ -13,8 +13,9 @@ class FetchData extends _$FetchData {
   static final FetchDataDataSource _source = FetchDataDataSource();
   static final FetchImageDataSource _imageSource = FetchImageDataSource();
   final FetchDataRepository _repository = FetchDataRepositoryImpl(_source);
-  final FetchImageRepository _imageRepository =
-      FetchImageRepositoryImpl(_imageSource);
+  final FetchImageRepository _imageRepository = FetchImageRepositoryImpl(
+    _imageSource,
+  );
 
   @override
   void build() {
@@ -56,7 +57,7 @@ class FetchData extends _$FetchData {
 
   Future<void> getAssignmentsByNurse(UserEntity user) async {
     try {
-      final result = await _repository.getAssignmentsByNurse(user.id);
+      final result = await _repository.getAssignmentsByNurse(user.uid);
       ref.read(assignmentsProvider.notifier).setAssignments(result);
     } on AppwriteException catch (error) {
       throw Exception(error.message);
@@ -113,6 +114,7 @@ class FetchData extends _$FetchData {
 
   Future<void> getScreeningsByPatient() async {
     final patients = ref.read(patientsProvider).map((e) => e.id).toList();
+    if (patients.isEmpty) return;
     try {
       final result = await _repository.getScreeningsByPatient(patients);
       ref.read(screeningsProvider.notifier).setScreenings(result);
@@ -125,6 +127,7 @@ class FetchData extends _$FetchData {
 
   Future<void> getRemarksByPatients() async {
     final screenings = ref.read(screeningsProvider).map((e) => e.id).toList();
+    if (screenings.isEmpty) return;
     try {
       final result = await _repository.getRemarksByPatients(screenings);
       ref.read(remarksProvider.notifier).setRemarks(result);
@@ -199,11 +202,12 @@ class FetchData extends _$FetchData {
   Future<void> filterSchoolsByUser(UserEntity user) async {
     final schools = ref.read(schoolsProvider);
     final assignments = ref.read(assignmentsProvider);
-    final filteredSchools = schools.where((school) {
-      return assignments.where((assignment) {
-        return assignment.school == school.id;
-      }).isNotEmpty;
-    }).toList();
+    final filteredSchools =
+        schools.where((school) {
+          return assignments.where((assignment) {
+            return assignment.school == school.id;
+          }).isNotEmpty;
+        }).toList();
     ref.read(schoolsProvider.notifier).setSchools(filteredSchools);
   }
 
@@ -215,13 +219,18 @@ class FetchData extends _$FetchData {
     final nurses = ref.read(nursesProvider);
 
     data.addAll([
-      ...patients
-          .map((e) => SearchEntity(name: e.name, role: SearchRole.patient)),
-      ...schools
-          .map((e) => SearchEntity(name: e.name, role: SearchRole.schools)),
-      ...doctors
-          .map((e) => SearchEntity(name: e.name, role: SearchRole.doctor)),
-      ...nurses.map((e) => SearchEntity(name: e.name, role: SearchRole.nurse)),
+      ...patients.map(
+        (e) => SearchEntity(name: e.name, role: SearchRole.patient),
+      ),
+      ...schools.map(
+        (e) => SearchEntity(name: e.name, role: SearchRole.schools),
+      ),
+      ...doctors.map(
+        (e) => SearchEntity(name: e.readableName, role: SearchRole.doctor),
+      ),
+      ...nurses.map(
+        (e) => SearchEntity(name: e.readableName, role: SearchRole.nurse),
+      ),
     ]);
 
     ref.read(searchProvider.notifier).addList(data);
@@ -241,7 +250,7 @@ class FetchData extends _$FetchData {
         await getPatientsBySchools();
       } else {
         await getAssignments();
-        await getPatientsByDoctor(user.id);
+        await getPatientsByDoctor(user.uid);
       }
       await getScreeningsByPatient();
       await getRemarksByPatients();

@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-
 class SchoolEntity {
   final String id;
   final String name;
@@ -43,7 +42,7 @@ class SchoolEntity {
       'abbr': abbr,
       'code': code,
       'address': address,
-      'isActive': isActive,
+      'is_active': isActive,
     };
   }
 
@@ -54,11 +53,9 @@ class SchoolEntity {
       abbr: map['abbr'] as String,
       code: map['code'] as String,
       address: map['address'] as String,
-      isActive: map['isActive'] as bool,
+      isActive: map['is_active'] as bool,
     );
   }
-
-  
 
   String toJson() => json.encode(toMap());
 

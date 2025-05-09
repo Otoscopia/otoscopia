@@ -3,6 +3,7 @@ import 'package:appwrite/models.dart';
 
 import 'package:otoscopia/src/config/config.dart';
 import 'package:otoscopia/src/core/core.dart';
+import 'package:otoscopia/src/core/functions/get_ids.dart';
 
 class FetchDataDataSource {
   final Databases _databases;
@@ -13,11 +14,8 @@ class FetchDataDataSource {
     try {
       DocumentList result = await _databases.listDocuments(
         databaseId: Env.database,
-        collectionId: Env.schoolCollection,
-        queries: [
-          Query.limit(100),
-          Query.equal('isActive', true),
-        ],
+        collectionId: getCollectionId('schools'),
+        queries: [Query.limit(100), Query.equal('is_active', true)],
       );
 
       return result;
@@ -30,11 +28,11 @@ class FetchDataDataSource {
     try {
       DocumentList result = await _databases.listDocuments(
         databaseId: Env.database,
-        collectionId: Env.schoolCollection,
+        collectionId: getCollectionId('schools'),
         queries: [
           Query.limit(100),
-          Query.equal('isAssigned', false),
-          Query.equal('isActive', true),
+          Query.equal('is_assigned', false),
+          Query.equal('is_active', true),
         ],
       );
 
@@ -48,7 +46,7 @@ class FetchDataDataSource {
     try {
       DocumentList result = await _databases.listDocuments(
         databaseId: Env.database,
-        collectionId: Env.assignmentCollection,
+        collectionId: getCollectionId('assignments'),
         queries: [Query.limit(100)],
       );
 
@@ -62,7 +60,7 @@ class FetchDataDataSource {
     try {
       DocumentList result = await _databases.listDocuments(
         databaseId: Env.database,
-        collectionId: Env.assignmentCollection,
+        collectionId: getCollectionId('assignments'),
         queries: [Query.equal("nurse", id)],
       );
 
@@ -76,10 +74,10 @@ class FetchDataDataSource {
     try {
       DocumentList result = await _databases.listDocuments(
         databaseId: Env.database,
-        collectionId: Env.patientCollection,
+        collectionId: getCollectionId('patients'),
         queries: [
           if (schools.isNotEmpty) Query.equal('school', schools),
-          Query.limit(100)
+          Query.limit(100),
         ],
       );
 
@@ -93,8 +91,8 @@ class FetchDataDataSource {
     try {
       DocumentList result = await _databases.listDocuments(
         databaseId: Env.database,
-        collectionId: Env.patientCollection,
-        queries: [Query.equal('doctor', id), Query.limit(100)],
+        collectionId: getCollectionId('patients'),
+        queries: [Query.equal('doctor', id)],
       );
 
       return result;
@@ -107,8 +105,8 @@ class FetchDataDataSource {
     try {
       DocumentList result = await _databases.listDocuments(
         databaseId: Env.database,
-        collectionId: Env.userCollection,
-        queries: [Query.equal('role', 'doctor'), Query.limit(100)],
+        collectionId: getCollectionId('users'),
+        queries: [Query.equal('role', '67bf07930003fc7ef011')],
       );
 
       return result;
@@ -121,8 +119,8 @@ class FetchDataDataSource {
     try {
       DocumentList result = await _databases.listDocuments(
         databaseId: Env.database,
-        collectionId: Env.userCollection,
-        queries: [Query.equal('role', 'nurse'), Query.limit(100)],
+        collectionId: getCollectionId('users'),
+        queries: [Query.equal('role', '67bf0797001abaa5b346')],
       );
 
       return result;
@@ -135,11 +133,8 @@ class FetchDataDataSource {
     try {
       DocumentList result = await _databases.listDocuments(
         databaseId: Env.database,
-        collectionId: Env.screeningCollection,
-        queries: [
-          if (patients.isNotEmpty) Query.equal('patient', patients),
-          Query.limit(100)
-        ],
+        collectionId: getCollectionId('screenings'),
+        queries: [if (patients.isNotEmpty) Query.equal('patient', patients)],
       );
 
       return result;
@@ -152,10 +147,10 @@ class FetchDataDataSource {
     try {
       DocumentList result = await _databases.listDocuments(
         databaseId: Env.database,
-        collectionId: Env.remarksCollection,
+        collectionId: getCollectionId('remarks'),
         queries: [
           if (screening.isNotEmpty) Query.equal('screening', screening),
-          Query.limit(100)
+          Query.limit(100),
         ],
       );
 
@@ -169,11 +164,8 @@ class FetchDataDataSource {
     try {
       DocumentList result = await _databases.listDocuments(
         databaseId: Env.database,
-        collectionId: Env.screeningCollection,
-        queries: [
-          Query.equal('patient', patient),
-          Query.limit(100)
-        ],
+        collectionId: getCollectionId('screenings'),
+        queries: [Query.equal('patient', patient)],
       );
 
       return result;
@@ -186,8 +178,8 @@ class FetchDataDataSource {
     try {
       DocumentList result = await _databases.listDocuments(
         databaseId: Env.database,
-        collectionId: Env.remarksCollection,
-        queries: [Query.equal('screening', screening), Query.limit(100)],
+        collectionId: getCollectionId('remarks'),
+        queries: [Query.equal('screening', screening)],
       );
 
       return result;

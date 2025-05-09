@@ -85,7 +85,7 @@ class _SignInState extends ConsumerState<SignIn> {
         ref.read(userProvider.notifier).setUser(user);
         await ref.read(fetchDataProvider.notifier).fetch(user);
 
-        if (user.id.isNotEmpty) {
+        if (user.uid.isNotEmpty) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
           });

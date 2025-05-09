@@ -16,21 +16,21 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
       final Session session = response[0];
       final Document user = response[1];
-      final Map<String, dynamic> prefs = response[2];
-      final MfaFactors mfaFactors = response[3];
+      final MfaFactors mfa = response[2];
+      final Document config = response[3];
 
-      final userEntity = UserEntity.fromMap(
-        user.data,
-        session.$id,
-        mfaFactors,
-        prefs,
+      final userEntity = UserEntity.fromAppwrite(
+        user: user,
+        session: session,
+        mfa: mfa,
+        config: config,
       );
 
       return userEntity;
-    } on AppwriteException catch (error) {
-      throw Exception(error.message);
-    } on Exception catch (error) {
-      throw Exception(error.toString());
+    } on AppwriteException {
+      rethrow;
+    } on Exception catch (_) {
+      rethrow;
     }
   }
 
@@ -41,14 +41,14 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
       final Session session = response[0];
       final Document user = response[1];
-      final Map<String, dynamic> prefs = response[2];
-      final MfaFactors mfaFactors = response[3];
+      final MfaFactors mfa = response[2];
+      final Document config = response[3];
 
-      final userEntity = UserEntity.fromMap(
-        user.data,
-        session.$id,
-        mfaFactors,
-        prefs,
+      final userEntity = UserEntity.fromAppwrite(
+        user: user,
+        session: session,
+        mfa: mfa,
+        config: config,
       );
 
       return userEntity;
@@ -81,15 +81,15 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       List response = await _source.confirmMfa(otp);
 
       final Session session = response[0];
-      final Map<String, dynamic> user = response[1];
-      final Map<String, dynamic> prefs = response[2];
-      final MfaFactors mfaFactors = response[3];
+      final Document user = response[1];
+      final MfaFactors mfa = response[2];
+      final Document config = response[3];
 
-      final userEntity = UserEntity.fromMap(
-        user,
-        session.$id,
-        mfaFactors,
-        prefs,
+      final userEntity = UserEntity.fromAppwrite(
+        user: user,
+        session: session,
+        mfa: mfa,
+        config: config,
       );
 
       return userEntity;

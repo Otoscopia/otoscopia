@@ -21,9 +21,9 @@ class _UserAccountState extends ConsumerState<UserAccount> {
     final user = ref.read(userProvider)!;
 
     _controllers.update(
-      name: user.name,
+      name: user.readableName,
       email: user.email,
-      phone: user.phone,
+      phone: user.contactNumber,
       address: user.workAddress,
     );
 
@@ -81,11 +81,12 @@ class _UserAccountState extends ConsumerState<UserAccount> {
               child: FilledButton(
                 onPressed: enableEditing ? saveInformation : editInformation,
                 child: Text(
-                    enableEditing ? "Save Information" : "Edit Information"),
+                  enableEditing ? "Save Information" : "Edit Information",
+                ),
               ),
             ),
           ],
-        )
+        ),
       ],
     );
   }

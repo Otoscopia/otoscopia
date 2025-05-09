@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:otoscopia/src/config/config.dart';
 import 'package:otoscopia/src/core/core.dart';
+import 'package:otoscopia/src/core/functions/get_ids.dart';
 
 class AppNavigation extends ConsumerWidget {
   const AppNavigation({super.key});
@@ -10,11 +11,13 @@ class AppNavigation extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final connection = ref.watch(connectionProvider);
+    final user = ref.read(userProvider);
 
     final events = [
-      'databases.${Env.database}.collections.${Env.patientCollection}.documents',
-      'databases.${Env.database}.collections.${Env.screeningCollection}.documents',
-      'databases.${Env.database}.collections.${Env.remarksCollection}.documents',
+      'databases.${Env.database}.collections.${getCollectionId('patients')}.documents',
+      'databases.${Env.database}.collections.${getCollectionId('screenings')}.documents',
+      'databases.${Env.database}.collections.${getCollectionId('remarks')}.documents',
+      'databases.${Env.database}.collections.${getCollectionId('activity_status')}.documents.${user?.activityStatusId}',
     ];
 
     if (connection) {
@@ -30,6 +33,13 @@ class AppNavigation extends ConsumerWidget {
                 .fromScreeningSnapshot(event.payload);
           } else if (event.channels.contains(events[2])) {
             ref.read(tableProvider.notifier).fromRemarksSnapshot(event.payload);
+          } else if (event.channels.contains(events[3])) {
+            databases.updateDocument(
+              databaseId: databaseId,
+              collectionId: getCollectionId('activity_status'),
+              documentId: user!.uid,
+              data: {'status': '67bf07de00139dce8f0e'},
+            );
           }
         } catch (e) {
           WidgetsFlutterBinding().addPostFrameCallback((_) {
@@ -48,12 +58,13 @@ class AppNavigation extends ConsumerWidget {
 
     return ApplicationContainer(
       child: NavigationView(
-        appBar: mobile
-            ? const NavigationAppBar(
-                title: Logo(),
-                automaticallyImplyLeading: false,
-              )
-            : null,
+        appBar:
+            mobile
+                ? const NavigationAppBar(
+                  title: Logo(),
+                  automaticallyImplyLeading: false,
+                )
+                : null,
         pane: NavigationPane(
           displayMode:
               mobile ? PaneDisplayMode.minimal : PaneDisplayMode.compact,
@@ -70,3 +81,11 @@ class AppNavigation extends ConsumerWidget {
     );
   }
 }
+
+
+// wss://cloud.otoscopia.ph/v1/realtime?
+// project=67ecc3d2001aa5bc3e9b&
+// channels%5B%5D=databases.6635e2ea0018d0f415e9.collections.67ee3a8b001086ef439a.documents&
+// channels%5B%5D=databases.6635e2ea0018d0f415e9.collections.67ee3a770021217af5dc.documents&
+// channels%5B%5D=databases.6635e2ea0018d0f415e9.collections.6804b3e00037287a1721.documents&
+// channels%5B%5D=databases.6635e2ea0018d0f415e9.collections.67ee60620021d898e380.documents.66336368001ab54dd19f

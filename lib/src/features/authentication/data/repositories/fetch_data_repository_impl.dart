@@ -44,9 +44,10 @@ class FetchDataRepositoryImpl implements FetchDataRepository {
     List<AssignmentEntity> assignments;
     try {
       DocumentList result = await _source.getAssignments();
-      assignments = result.documents
-          .map((e) => AssignmentEntity.fromMap(e.data))
-          .toList();
+      assignments =
+          result.documents
+              .map((e) => AssignmentEntity.fromMap(e.data))
+              .toList();
 
       return assignments;
     } on AppwriteException catch (error) {
@@ -61,9 +62,10 @@ class FetchDataRepositoryImpl implements FetchDataRepository {
     List<AssignmentEntity> assignments;
     try {
       DocumentList result = await _source.getAssignmentsByNurse(user);
-      assignments = result.documents
-          .map((e) => AssignmentEntity.fromMap(e.data))
-          .toList();
+      assignments =
+          result.documents
+              .map((e) => AssignmentEntity.fromMap(e.data))
+              .toList();
 
       return assignments;
     } on AppwriteException catch (error) {
@@ -104,11 +106,13 @@ class FetchDataRepositoryImpl implements FetchDataRepository {
   }
 
   @override
-  Future<List<UsersEntity>> getDoctors() async {
+  Future<List<UserEntity>> getDoctors() async {
     try {
       DocumentList result = await _source.getDoctors();
       final doctors =
-          result.documents.map((e) => UsersEntity.fromMap(e.data)).toList();
+          result.documents
+              .map((e) => UserEntity.fromAppwrite(user: e))
+              .toList();
 
       return doctors;
     } on AppwriteException catch (error) {
@@ -119,11 +123,13 @@ class FetchDataRepositoryImpl implements FetchDataRepository {
   }
 
   @override
-  Future<List<UsersEntity>> getNurses() async {
+  Future<List<UserEntity>> getNurses() async {
     try {
       DocumentList result = await _source.getNurses();
       final nurses =
-          result.documents.map((e) => UsersEntity.fromMap(e.data)).toList();
+          result.documents
+              .map((e) => UserEntity.fromAppwrite(user: e))
+              .toList();
 
       return nurses;
     } on AppwriteException catch (error) {
@@ -135,7 +141,8 @@ class FetchDataRepositoryImpl implements FetchDataRepository {
 
   @override
   Future<List<ScreeningEntity>> getScreeningsByPatient(
-      List<String> patients) async {
+    List<String> patients,
+  ) async {
     try {
       DocumentList result = await _source.getScreeningsByPatient(patients);
       final screenings =

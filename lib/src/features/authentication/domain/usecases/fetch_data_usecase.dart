@@ -9,7 +9,7 @@ class FetchDataUseCase {
   Future<List<SchoolEntity>> getSchools() async {
     return await _fetchDataRepository.getSchools();
   }
-  
+
   Future<List<SchoolEntity>> getUnAssignedSchools() async {
     return await _fetchDataRepository.getUnAssignedSchools();
   }
@@ -25,20 +25,22 @@ class FetchDataUseCase {
   Future<List<PatientEntity>> getPatientsBySchools(List<String> schools) async {
     return await _fetchDataRepository.getPatientsBySchools(schools);
   }
-  
+
   Future<List<PatientEntity>> getPatientsByDoctor(String id) async {
     return await _fetchDataRepository.getPatientsByDoctor(id);
   }
 
-  Future<List<UsersEntity>> getDoctors() async {
+  Future<List<UserEntity>> getDoctors() async {
     return await _fetchDataRepository.getDoctors();
   }
 
-  Future<List<UsersEntity>> getNurses() async {
+  Future<List<UserEntity>> getNurses() async {
     return await _fetchDataRepository.getNurses();
   }
 
-  Future<List<ScreeningEntity>> getScreeningsByPatient(List<String> patients) async {
+  Future<List<ScreeningEntity>> getScreeningsByPatient(
+    List<String> patients,
+  ) async {
     return await _fetchDataRepository.getScreeningsByPatient(patients);
   }
 

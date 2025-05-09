@@ -14,8 +14,10 @@ class PatientEntity {
   final String lrn;
   final String guardian;
   final String guardianPhone;
-  final String creator;
-  final String doctor;
+  final String creatorId;
+  final String doctorId;
+  final Map<String, dynamic>? creator;
+  final Map<String, dynamic>? doctor;
   final String code;
   final String? image;
   final DateTime updatedAt;
@@ -30,12 +32,14 @@ class PatientEntity {
     required this.lrn,
     required this.guardian,
     required this.guardianPhone,
-    required this.creator,
-    required this.doctor,
+    required this.creatorId,
+    required this.doctorId,
     required this.code,
-    this.image,
     required this.updatedAt,
     required this.createdAt,
+    this.creator,
+    this.image,
+    this.doctor,
   });
 
   PatientEntity copyWith({
@@ -47,8 +51,10 @@ class PatientEntity {
     String? lrn,
     String? guardian,
     String? guardianPhone,
-    String? creator,
-    String? doctor,
+    Map<String, dynamic>? creator,
+    Map<String, dynamic>? doctor,
+    String? creatorId,
+    String? doctorId,
     String? code,
     String? image,
     DateTime? updatedAt,
@@ -65,6 +71,8 @@ class PatientEntity {
       guardianPhone: guardianPhone ?? this.guardianPhone,
       creator: creator ?? this.creator,
       doctor: doctor ?? this.doctor,
+      creatorId: creatorId ?? this.creatorId,
+      doctorId: doctorId ?? this.doctorId,
       code: code ?? this.code,
       image: image ?? this.image,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -85,34 +93,35 @@ class PatientEntity {
       'lrn': lrn,
       'guardian': guardian,
       'guardianPhone': guardianPhone,
-      'creator': creator,
-      'doctor': doctor,
+      'creator': creatorId,
+      'doctor': doctorId,
       'code': code,
       'image': image,
     };
   }
 
   factory PatientEntity.fromMap(Map<String, dynamic> map) {
-    Gender gender = map["gender"] == "male" ? Gender.male : Gender.female;
+    String gender = map["gender"]['name'];
 
     return PatientEntity(
       id: map['\$id'] as String,
-      name: map['name'] as String,
-      gender: gender,
-      birthDate: DateTime.parse(map['birthDate'] as String),
+      name: map['readable_name'] as String,
+      gender: Gender.values.firstWhere((g) => g.name.contains(gender)),
+      birthDate: DateTime.parse(map['birth_date'] as String),
       school: map['school']['\$id'] as String,
       lrn: map['lrn'] as String,
-      guardian: map['guardian'] as String,
-      guardianPhone: map['guardianPhone'] as String,
-      creator: map['creator'] as String,
-      doctor: map['doctor']["\$id"] as String,
+      guardian: map['guardian']['readable_name'] as String,
+      guardianPhone: map['guardian']['contact_number'] as String,
+      creator: map['creator'] as Map<String, dynamic>,
+      doctor: map['doctor'] as Map<String, dynamic>,
+      creatorId: map['creator']['\$id'],
+      doctorId: map['doctor']['\$id'],
       code: map['code'] as String,
       image: map['image'] != null ? map['image'] as String : null,
       updatedAt: DateTime.parse(map['\$updatedAt'] as String),
       createdAt: DateTime.parse(map['\$createdAt'] as String),
     );
   }
-
 
   String toJson() => json.encode(toMap());
 
@@ -162,28 +171,10 @@ class PatientEntity {
         createdAt.hashCode;
   }
 
-  factory PatientEntity.initial() {
-    return PatientEntity(
-      id: "",
-      name: "",
-      gender: Gender.unknown,
-      birthDate: DateTime.now(),
-      school: "",
-      lrn: "",
-      guardian: "",
-      guardianPhone: "",
-      creator: "",
-      doctor: "",
-      code: "",
-      updatedAt: DateTime.now(),
-      createdAt: DateTime.now(),
-    );
-  }
-
   factory PatientEntity.fromFormEntity(
     PatientFormEntity form,
     String creatorId,
-    List<UsersEntity> doctors,
+    List<UserEntity> doctors,
   ) {
     return PatientEntity(
       id: uuid.v4(),
@@ -194,8 +185,8 @@ class PatientEntity {
       lrn: form.lrn,
       guardian: form.guardianName,
       guardianPhone: form.guardianPhone,
-      creator: creatorId,
-      doctor: shuffleDoctor(doctors).id,
+      creatorId: creatorId,
+      doctorId: shuffleDoctor(doctors).uid,
       code: generateCode(form.name, form.birthDate),
       updatedAt: DateTime.now(),
       createdAt: DateTime.now(),
@@ -217,6 +208,8 @@ class PatientEntity {
       guardianPhone: form.guardianPhone,
       creator: patient.creator,
       doctor: patient.doctor,
+      creatorId: patient.creatorId,
+      doctorId: patient.doctorId,
       code: generateCode(form.name, form.birthDate),
       updatedAt: patient.updatedAt,
       createdAt: patient.createdAt,

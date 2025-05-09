@@ -15,7 +15,7 @@ class ProfileSettings extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.read(userProvider)!;
-    final mfa = user.mfaFactors.totp;
+    final mfa = user.mfaEnabled;
     final role = user.role;
 
     return Column(
@@ -35,7 +35,7 @@ class ProfileSettings extends ConsumerWidget {
                     const CustomText("Security Status", style: 5),
                     CustomText(mfa ? "Secured" : "Unsecured"),
                   ],
-                )
+                ),
               ],
             ),
           ],

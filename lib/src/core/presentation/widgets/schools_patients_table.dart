@@ -42,11 +42,11 @@ class SchoolsPatientTable extends m3.DataTableSource {
   @override
   m3.DataRow? getRow(int index) {
     final patient = _patients[index];
-    final doctor = ref.read(doctorsProvider.notifier).findById(patient.doctor);
+    final doctor = patient.doctor;
     return DataRow2(
       cells: [
         m3.DataCell(CustomText(patient.name)),
-        m3.DataCell(CustomText(doctor.name)),
+        m3.DataCell(CustomText(doctor?['readable_name'])),
       ],
       onSelectChanged: (value) {
         final patientNotifier = ref.read(patientsTabProvider.notifier);

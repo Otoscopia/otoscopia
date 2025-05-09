@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 
 import 'package:appwrite/appwrite.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:uuid/uuid.dart';
 
@@ -14,10 +15,16 @@ import 'desktop_dependency.dart';
 late final Client client;
 late final Realtime realtime;
 late final Functions functions;
+late final Databases databases;
+late Map<String, dynamic> collectionIds;
+late Map<String, dynamic> functionIds;
+late Map<String, dynamic> storageIds;
+late Map<String, dynamic> eventIds;
 late final Uuid uuid;
 late final String applicationDirectory;
 late final String documentDirectory;
 late final DeviceType deviceType;
+late final BaseDeviceInfo device;
 
 class DependencyInjection {
   static final DependencyInjection _singleton = DependencyInjection._internal();
@@ -33,6 +40,8 @@ class DependencyInjection {
 
     SystemTheme.fallbackColor = AppColors.secondary;
     await SystemTheme.accentColor.load();
+
+    await deviceInfoManager();
 
     await appwriteInit();
 
@@ -57,9 +66,10 @@ class DependencyInjection {
 
   Future<void> appwriteInit() async {
     client = Client();
-    client.setEndpoint(Env.endpoint).setProject(Env.project);
+    client.setEndpoint(Env.appwriteClient).setProject(Env.appwriteProject);
     realtime = Realtime(client);
     functions = Functions(client);
+    databases = Databases(client);
   }
 
   DeviceType getDeviceType() {
@@ -70,5 +80,11 @@ class DependencyInjection {
     } else {
       return DeviceType.desktop;
     }
+  }
+
+  Future<void> deviceInfoManager() async {
+    final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+    device = await deviceInfo.deviceInfo;
   }
 }

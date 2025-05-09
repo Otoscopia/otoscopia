@@ -20,26 +20,33 @@ class _AssignedSchoolsState extends ConsumerState<AssignedSchools> {
   @override
   void initState() {
     super.initState();
-    schools = ref
-        .read(schoolsProvider)
-        .map((school) => SchoolEntity(
-              id: school.id,
-              name: school.name,
-              abbr: school.abbr,
-              code: school.code,
-              address: school.address.split("Iligan City")[0],
-              isActive: school.isActive,
-            ))
-        .toList();
+    schools =
+        ref
+            .read(schoolsProvider)
+            .map(
+              (school) => SchoolEntity(
+                id: school.id,
+                name: school.name,
+                abbr: school.abbr,
+                code: school.code,
+                address: school.address.split("Iligan City")[0],
+                isActive: school.isActive,
+              ),
+            )
+            .toList();
 
     final assignment = ref.read(assignmentsProvider);
     final user = ref.read(userProvider)!;
 
-    selectedSchools = assignment
-        .where((assignment) => assignment.nurse == user.id)
-        .map((assignment) =>
-            schools.firstWhere((school) => school.id == assignment.school))
-        .toList();
+    selectedSchools =
+        assignment
+            .where((assignment) => assignment.nurse == user.uid)
+            .map(
+              (assignment) => schools.firstWhere(
+                (school) => school.id == assignment.school,
+              ),
+            )
+            .toList();
   }
 
   @override

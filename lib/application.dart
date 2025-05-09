@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:otoscopia/src/core/core.dart';
 
 class ApplicationConfig {
-  static const String currentVersion = "0.2.0";
   static const kRepository =
       "https://api.github.com/repos/otoscopia/otoscopia/releases";
 
@@ -19,4 +18,3 @@ class ApplicationConfig {
     }
   }
 }
-

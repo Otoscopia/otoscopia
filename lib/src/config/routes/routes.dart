@@ -17,9 +17,7 @@ Map<String, WidgetBuilder> createRoutes(
     case UserRole.admin:
       return AdminRoutes.getRoutes(platform);
     case UserRole.doctor || UserRole.nurse:
-      return {
-        '/': (context) => const AppNavigation(),
-      };
+      return {'/': (context) => const AppNavigation()};
     case UserRole.patient:
       return PatientRoutes.getRoutes(platform);
     default:

@@ -21,11 +21,11 @@ class Patient extends _$Patient {
     if (hasValue) {
       state = PatientEntity.copyFromForm(state!, form);
     } else {
-      state = PatientEntity.fromFormEntity(form, user.id, doctors);
+      state = PatientEntity.fromFormEntity(form, user.uid, doctors);
     }
   }
 
   void resetInformation() {
-    state = PatientEntity.initial();
+    state = null;
   }
 }

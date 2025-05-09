@@ -40,7 +40,7 @@ class AssignmentEntity {
     return <String, dynamic>{
       'nurse': nurse,
       'school': school,
-      'isActive': isActive,
+      'is_active': isActive,
     };
   }
 
@@ -49,7 +49,7 @@ class AssignmentEntity {
       id: map['\$id'] as String,
       nurse: map['nurse']["\$id"] as String,
       school: map['school']["\$id"] as String,
-      isActive: map['isActive'] as bool,
+      isActive: map['is_active'] as bool,
       createdAt: DateTime.parse(map['\$createdAt']),
       updatedAt: DateTime.parse(map['\$updatedAt']),
     );

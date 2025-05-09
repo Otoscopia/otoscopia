@@ -61,7 +61,7 @@ class Authentication extends _$Authentication {
   Future<void> logout() async {
     UserEntity user = ref.read(userProvider)!;
     try {
-      await _repository.logout(user.sessionId);
+      await _repository.logout(user.session!);
 
       state = false;
 

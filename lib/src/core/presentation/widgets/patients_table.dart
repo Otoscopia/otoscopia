@@ -52,8 +52,8 @@ class PatientsTableSource extends m3.DataTableSource {
     final gender = patient.gender == Gender.male ? kGenders[0] : kGenders[1];
     final school =
         ref.read(schoolsProvider.notifier).findById(patient.school).name;
-    final doctor =
-        ref.read(doctorsProvider.notifier).findById(patient.doctor).name;
+    final doctor = patient.doctor?['readable_name'];
+
     return DataRow2(
       cells: [
         m3.DataCell(CustomText(patient.name)),

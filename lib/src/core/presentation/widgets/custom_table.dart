@@ -10,9 +10,7 @@ import 'package:otoscopia/src/config/config.dart';
 import 'package:otoscopia/src/core/core.dart';
 
 class CustomTable extends ConsumerWidget {
-  const CustomTable({
-    super.key,
-  });
+  const CustomTable({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,9 +25,10 @@ class CustomTable extends ConsumerWidget {
     final isWeb = deviceType == DeviceType.web;
     final isMobile = deviceType == DeviceType.mobile;
 
-    final mobile = isMobile == true
-        ? isMobile
-        : isWeb && MediaQuery.of(context).size.width < 400;
+    final mobile =
+        isMobile == true
+            ? isMobile
+            : isWeb && MediaQuery.of(context).size.width < 400;
 
     return Card(
       padding: EdgeInsets.zero,
@@ -40,8 +39,9 @@ class CustomTable extends ConsumerWidget {
             showCheckboxColumn: false,
             minWidth: mobile ? 500 : 1200,
             empty: const Center(child: Text(kNoDataAvailable)),
-            headingRowColor:
-                const m3.WidgetStatePropertyAll(Colors.transparent),
+            headingRowColor: const m3.WidgetStatePropertyAll(
+              Colors.transparent,
+            ),
             sortArrowAlwaysVisible: true,
             rowsPerPage: 20,
             columns: [
@@ -51,9 +51,13 @@ class CustomTable extends ConsumerWidget {
               ),
               if (!mobile)
                 const DataColumn2(
-                    label: Text(kAgeAndGender), size: ColumnSize.S),
+                  label: Text(kAgeAndGender),
+                  size: ColumnSize.S,
+                ),
               DataColumn2(
-                  label: const Text(kStatus), fixedWidth: mobile ? 175 : null),
+                label: const Text(kStatus),
+                fixedWidth: mobile ? 175 : null,
+              ),
               if (!mobile) const DataColumn2(label: Text(kSchool)),
               if (!mobile)
                 if (nurse) const DataColumn2(label: Text(kDoctor)),
@@ -93,10 +97,11 @@ class TableSource extends m3.DataTableSource {
     final patient = table.patient;
 
     final school = ref.read(schoolsProvider.notifier).findById(patient.school);
-    final assignment =
-        ref.read(assignmentsProvider.notifier).findBySchool(school.id);
+    final assignment = ref
+        .read(assignmentsProvider.notifier)
+        .findBySchool(school.id);
     final nurse = ref.read(nursesProvider.notifier).findById(assignment.nurse);
-    final doctor = ref.read(doctorsProvider.notifier).findById(patient.doctor);
+    final doctor = patient.doctor;
     final age = DateTime.now().difference(patient.birthDate).inDays ~/ 365;
     final icon = table.remarks?.statusIcon ?? Ionicons.time_outline;
     final status = table.remarks?.statusString ?? "Pending";
@@ -105,9 +110,10 @@ class TableSource extends m3.DataTableSource {
     final isWeb = deviceType == DeviceType.web;
     final isMobile = deviceType == DeviceType.mobile;
 
-    final mobile = isMobile == true
-        ? isMobile
-        : isWeb && MediaQuery.of(_context).size.width < 400;
+    final mobile =
+        isMobile == true
+            ? isMobile
+            : isWeb && MediaQuery.of(_context).size.width < 400;
 
     final hasRemarks = table.remarks != null;
 
@@ -116,9 +122,10 @@ class TableSource extends m3.DataTableSource {
     final style = role ? 7 : (hasRemarks ? 0 : 5);
 
     return DataRow2(
-      color: role && !hasRemarks
-          ? null
-          : isDark
+      color:
+          role && !hasRemarks
+              ? null
+              : isDark
               ? const m3.WidgetStatePropertyAll(Color(0xFF1d2224))
               : const m3.WidgetStatePropertyAll(Color(0xFFabb1b4)),
       onSelectChanged: (value) {
@@ -127,17 +134,21 @@ class TableSource extends m3.DataTableSource {
       cells: [
         m3.DataCell(CustomText(patient.name, style: style)),
         if (!mobile) m3.DataCell(CustomText("$age/$gender", style: style)),
-        m3.DataCell(m3.Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(icon),
-            const Gap(4),
-            CustomText(status, style: style),
-          ],
-        )),
+        m3.DataCell(
+          m3.Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(icon),
+              const Gap(4),
+              CustomText(status, style: style),
+            ],
+          ),
+        ),
         if (!mobile) m3.DataCell(CustomText(school.name, style: style)),
-        if (!mobile && role) m3.DataCell(CustomText(doctor.name, style: style)),
-        if (!mobile && !role) m3.DataCell(CustomText(nurse.name, style: style)),
+        if (!mobile && role)
+          m3.DataCell(CustomText(doctor?['readable_name'], style: style)),
+        if (!mobile && !role)
+          m3.DataCell(CustomText(nurse.readableName, style: style)),
       ],
     );
   }
@@ -152,7 +163,9 @@ class TableSource extends m3.DataTableSource {
   int get selectedRowCount => 0;
 
   void sortByName<T>(
-      Comparable<T> Function(TableEntity d) getField, bool ascending) {
+    Comparable<T> Function(TableEntity d) getField,
+    bool ascending,
+  ) {
     _data.sort((a, b) {
       final aValue = getField(a);
       final bValue = getField(b);
