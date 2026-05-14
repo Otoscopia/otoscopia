@@ -18,7 +18,7 @@ dependencies:
   dio: ^5.4.3+1
   envied: ^0.5.4+1
   file_picker: ^8.0.1
-  file_saver: ^0.2.13
+  file_saver: ^0.4.0
   fluent_ui: ^4.8.7
   fluentui_system_icons: ^1.1.240
   flutter:
